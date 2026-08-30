@@ -1,0 +1,132 @@
+/* Uses shared design tokens from App.css :root */
+
+/* ---------- Heart icon on product cards ---------- */
+
+.card-image-wrap {
+  position: relative;
+}
+
+.wishlist-heart-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.15);
+  transition: transform 0.15s ease, background 0.2s ease;
+  z-index: 2;
+}
+
+.wishlist-heart-btn:hover {
+  transform: scale(1.08);
+}
+
+.wishlist-heart-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wishlist-heart-btn.active {
+  color: var(--wine);
+}
+
+.wishlist-heart-btn:not(.active) {
+  color: var(--muted);
+}
+
+/* ---------- Heart icon on Product Details page ---------- */
+
+.details-wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 9px 16px;
+  margin-bottom: 22px;
+  margin-left: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.details-wishlist-btn:hover {
+  border-color: var(--wine);
+}
+
+.details-wishlist-btn.active {
+  color: var(--wine);
+  border-color: var(--wine);
+}
+
+.details-wishlist-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.details-actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ---------- Wishlist page ---------- */
+
+.wishlist-page {
+  padding-top: 48px;
+}
+
+.wishlist-title {
+  margin: 0 0 32px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 34px;
+  color: var(--ink);
+}
+
+.wishlist-empty {
+  text-align: center;
+  padding: 80px 20px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  color: var(--muted);
+}
+
+.wishlist-empty h3 {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ink);
+}
+
+.wishlist-empty-subtext {
+  margin: 0;
+  font-size: 14px;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 28px;
+  margin-top: 20px;
+}
+
+@media (max-width: 640px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+}

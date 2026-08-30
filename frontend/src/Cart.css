@@ -1,0 +1,206 @@
+/* Uses shared design tokens from App.css :root
+   (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted) */
+
+.cart-page {
+  padding-top: 48px;
+}
+
+.cart-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 34px;
+  color: var(--ink);
+  margin: 0 0 32px;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 80px 20px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  color: var(--muted);
+}
+
+.cart-empty h3 {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ink);
+}
+
+.cart-empty-subtext {
+  margin: 0;
+  font-size: 14px;
+}
+
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  align-items: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 8px 24px rgba(20, 20, 20, 0.06);
+}
+
+.cart-item-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #f1efe9;
+  flex-shrink: 0;
+}
+
+.cart-item-body {
+  flex: 1;
+}
+
+.cart-item-body h3 {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 19px;
+  color: var(--ink);
+}
+
+.cart-item-price {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cart-item-delivery {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b8a3e;
+}
+
+.cart-qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.qty-btn:hover {
+  border-color: var(--wine);
+  background: #fff;
+}
+
+.qty-value {
+  font-size: 15px;
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+}
+
+.cart-item-subtotal {
+  margin: 16px 0 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.remove-btn {
+  background: transparent;
+  color: #c0392b;
+  border: 1px solid #f1c4bc;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+}
+
+.cart-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cart-total {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.checkout-btn {
+  background: var(--wine);
+  color: var(--paper);
+  padding: 14px 32px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.checkout-btn:hover {
+  background: var(--wine-dark);
+}
+
+@media (max-width: 640px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .cart-item-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .cart-summary {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .checkout-btn {
+    width: 100%;
+  }
+}

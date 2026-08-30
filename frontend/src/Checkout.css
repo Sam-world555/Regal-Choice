@@ -1,0 +1,217 @@
+/* Uses shared design tokens from App.css :root
+   (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted) */
+
+.checkout-page {
+  padding-top: 48px;
+  display: flex;
+  justify-content: center;
+}
+
+.checkout-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.checkout-title {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--ink);
+}
+
+.checkout-subtitle {
+  margin: 0 0 28px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkout-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkout-input:focus {
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.1);
+  background: #fff;
+}
+
+.checkout-textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.checkout-row {
+  display: flex;
+  gap: 16px;
+}
+
+.checkout-row .checkout-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.pay-btn {
+  margin-top: 12px;
+  padding: 15px 20px;
+  background: var(--wine);
+  color: var(--paper);
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pay-btn:hover {
+  background: var(--wine-dark);
+}
+
+@media (max-width: 560px) {
+  .checkout-card {
+    padding: 28px 22px;
+    border-radius: 16px;
+  }
+
+  .checkout-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+/* Add this to Checkout.css - used by the coupon section and price summary */
+
+.coupon-section {
+  margin-top: -4px;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.coupon-input {
+  flex: 1;
+}
+
+.coupon-apply-btn {
+  padding: 0 20px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.coupon-apply-btn:hover {
+  background: var(--wine);
+  border-color: var(--wine);
+}
+
+.coupon-apply-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.coupon-applied-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(43, 138, 62, 0.3);
+  background: rgba(43, 138, 62, 0.08);
+  border-radius: 10px;
+}
+
+.coupon-applied-tag {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b8a3e;
+}
+
+.coupon-remove-btn {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.coupon-remove-btn:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.checkout-summary {
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  text-align: right;
+}
+
+.checkout-summary-line {
+  margin: 0 0 2px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.checkout-summary-line.strike {
+  text-decoration: line-through;
+}
+
+.checkout-summary-total {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+@media (max-width: 480px) {
+  .coupon-input-row {
+    flex-direction: column;
+  }
+}
+/* Add this to Checkout.css - used by the saved address selector dropdown */
+
+.address-select-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.address-select-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}

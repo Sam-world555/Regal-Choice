@@ -1,0 +1,335 @@
+/* Uses shared design tokens from App.css :root
+   (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted) */
+
+.orders-page {
+  padding-top: 48px;
+}
+
+.orders-title {
+  margin: 0 0 32px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 34px;
+  color: var(--ink);
+}
+
+.orders-empty {
+  text-align: center;
+  padding: 80px 20px;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  color: var(--muted);
+}
+
+.orders-empty h3 {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--ink);
+}
+
+.orders-empty-subtext {
+  margin: 0;
+  font-size: 14px;
+}
+
+.order-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  background: var(--card);
+}
+
+.order-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.order-card-header h2 {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 5px 14px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.order-total {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.order-divider {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 20px 0;
+}
+
+.order-section-title {
+  margin: 0 0 14px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.order-address {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.order-address p {
+  margin: 0;
+}
+
+.order-address strong {
+  color: var(--ink);
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.order-item-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #f1efe9;
+  flex-shrink: 0;
+}
+
+.order-item h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.order-item-price {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .order-card {
+    padding: 20px;
+  }
+
+  .order-address {
+    grid-template-columns: 1fr;
+  }
+}
+/* Add this to Orders.css - used by the invoice download button */
+
+.order-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoice-download-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.invoice-download-btn:hover {
+  border-color: var(--wine);
+  color: var(--wine);
+}
+/* Add this to Orders.css - used by the new collapsed Orders list and OrderDetails page */
+
+.orders-search-input {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--card);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.orders-search-input:focus {
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.1);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.order-row:hover {
+  box-shadow: 0 10px 28px rgba(20, 20, 20, 0.08);
+  transform: translateY(-2px);
+}
+
+.order-row-image {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  background: #f1efe9;
+}
+
+.order-row-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-row-title {
+  margin: 0 0 6px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-row-extra {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.order-row-meta {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.order-row-total {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine);
+}
+
+.order-row-status {
+  flex-shrink: 0;
+}
+
+.order-row-arrow {
+  font-size: 22px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* --- Skeleton rows for the collapsed list --- */
+
+.skeleton-order-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  margin-bottom: 14px;
+}
+
+.skeleton-order-row-image {
+  width: 84px;
+  height: 84px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-order-row-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* --- Back link on OrderDetails page --- */
+
+.order-back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--wine);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.order-back-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 560px) {
+  .order-row {
+    flex-wrap: wrap;
+  }
+
+  .order-row-status {
+    order: 3;
+  }
+
+  .order-row-arrow {
+    display: none;
+  }
+}

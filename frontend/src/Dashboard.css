@@ -1,0 +1,130 @@
+/* Uses shared design tokens from App.css :root */
+
+/* ---------- Extra stat color (add if not already in Admin.css) ---------- */
+
+.stat-red {
+  color: #dc2626;
+}
+
+/* ---------- Chart panel ---------- */
+
+.dashboard-chart-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Two-column grid (Low Stock / Top Products) ---------- */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.dashboard-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.dashboard-panel-full {
+  margin-bottom: 48px;
+}
+
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.dashboard-list-row:last-child {
+  border-bottom: none;
+}
+
+.dashboard-list-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f1efe9;
+}
+
+.dashboard-list-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-list-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wine);
+  flex-shrink: 0;
+}
+
+/* ---------- Recent orders row ---------- */
+
+.dashboard-order-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 90px 100px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.dashboard-order-row:last-child {
+  border-bottom: none;
+}
+
+.dashboard-order-id {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.dashboard-order-user {
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-order-total {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+@media (max-width: 800px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-order-row {
+    grid-template-columns: 60px 1fr 70px;
+  }
+
+  .dashboard-order-row .status-pill {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: 4px;
+  }
+}

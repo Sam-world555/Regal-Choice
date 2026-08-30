@@ -1,0 +1,40 @@
+/* Base reset — kept minimal since App.css owns the actual site design.
+   The old Vite template boilerplate (fixed #root width, purple accent,
+   dark-mode overrides) has been removed since it was fighting with
+   App.css's .container width and color tokens. */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}

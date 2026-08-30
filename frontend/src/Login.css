@@ -1,0 +1,148 @@
+/* Uses shared design tokens from App.css :root
+   (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted) */
+
+.auth-page {
+  padding-top: 64px;
+  padding-bottom: 64px;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 44px 40px;
+  text-align: center;
+}
+
+.auth-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.auth-title {
+  margin: 0 0 30px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--ink);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-input:focus {
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.1);
+  background: #fff;
+}
+
+.auth-btn {
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: var(--wine);
+  color: var(--paper);
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.auth-btn:hover {
+  background: var(--wine-dark);
+}
+
+.auth-switch {
+  margin: 24px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.auth-switch a {
+  color: var(--wine);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 32px 24px;
+    border-radius: 16px;
+  }
+}
+/* Add this to Login.css - used by Forgot Password and Login with OTP pages */
+
+.auth-links-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -6px;
+}
+
+.auth-inline-link {
+  font-size: 12px;
+  color: var(--wine);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-inline-link:hover {
+  text-decoration: underline;
+}
+
+.auth-helper-text {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.auth-resend-btn {
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-resend-btn:hover {
+  color: var(--wine);
+}
+
+.auth-resend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

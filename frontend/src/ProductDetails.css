@@ -1,0 +1,292 @@
+/* ---------- Product Details Page ---------- */
+/* Uses shared design tokens (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted)
+   defined in App.css :root — import App.css before this file, or duplicate the
+   :root block here if this page can load standalone. */
+
+.pdp-loading {
+  text-align: center;
+  padding: 100px 20px;
+  color: var(--muted);
+}
+
+.product-details {
+  padding-top: 48px;
+}
+
+.details-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.details-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-image-wrap {
+  aspect-ratio: 3 / 4;
+  background: #f1efe9;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.details-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 66px;
+  height: 66px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.thumbnail:hover {
+  transform: translateY(-2px);
+}
+
+.thumbnail-active {
+  border: 2px solid var(--wine);
+}
+
+.details-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-right h1 {
+  margin: 0 0 8px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: var(--ink);
+}
+
+.details-right .price {
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--wine);
+}
+
+.stock-badge {
+  display: inline-block;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(43, 138, 62, 0.1);
+  color: #2b8a3e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rate-btn {
+  width: fit-content;
+  padding: 9px 16px;
+  margin-bottom: 22px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.rate-btn:hover {
+  border-color: var(--gold);
+}
+
+.delivery-note {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.details-right .category {
+  margin: 0 0 16px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.details-right .description {
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.qty-btn:hover {
+  border-color: var(--wine);
+  background: var(--paper);
+}
+
+.qty-value {
+  font-size: 18px;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+.details-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.btn-outline,
+.btn-solid {
+  flex: 1;
+  padding: 15px 20px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn-solid {
+  background: var(--wine);
+  border: 1.5px solid var(--wine);
+  color: var(--paper);
+}
+
+.btn-solid:hover {
+  background: var(--wine-dark);
+  border-color: var(--wine-dark);
+}
+
+@media (max-width: 800px) {
+  .details-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 24px;
+  }
+
+  .details-buttons {
+    flex-direction: column;
+  }
+}
+/* --- Add to Admin.css (used in AdminProducts.jsx product card) --- */
+
+.admin-product-sku {
+  margin: 0 0 6px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* --- Add to ProductDetails.css (used next to the category line) --- */
+
+.sku-text {
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+/* --- Add to ProductDetails.css (styles the react-markdown rendered description) --- */
+
+.description-markdown {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.description-markdown h1,
+.description-markdown h2,
+.description-markdown h3,
+.description-markdown h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+.description-markdown p {
+  margin: 0 0 14px;
+}
+
+.description-markdown strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.description-markdown ul,
+.description-markdown ol {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+.description-markdown li {
+  margin-bottom: 6px;
+}
+
+.description-markdown li::marker {
+  color: var(--wine);
+}
+
+.description-markdown > *:last-child {
+  margin-bottom: 0;
+}

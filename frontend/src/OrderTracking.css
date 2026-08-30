@@ -1,0 +1,97 @@
+/* Uses shared design tokens from App.css :root */
+
+.order-tracking {
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.order-tracking-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.order-tracking-node {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.order-tracking-dot {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+
+.order-tracking-dot.completed {
+  border-color: var(--wine);
+  background: var(--wine);
+  color: #fff;
+}
+
+.order-tracking-line {
+  flex: 1;
+  height: 2px;
+  background: var(--line);
+  margin: 0 2px;
+  transition: background 0.2s ease;
+}
+
+.order-tracking-line.completed {
+  background: var(--wine);
+}
+
+.order-tracking-label {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.order-tracking-label.completed {
+  color: var(--ink);
+}
+
+.order-tracking-label.current {
+  color: var(--wine);
+  font-weight: 700;
+}
+
+.order-cancelled-banner {
+  margin: 20px 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .order-tracking-label {
+    font-size: 9px;
+  }
+
+  .order-tracking-dot {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+}
