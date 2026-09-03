@@ -677,3 +677,98 @@ body {
     font-size: 12px;
   }
 }
+/* ============================================================
+   ADD THIS TO App.css — replaces/extends the existing
+   .navbar / .navbar-links / @media(max-width:640px) .navbar rules.
+   Paste this block right after your existing .nav-badge rule
+   and DELETE the old "@media (max-width: 640px) { .navbar {...} }"
+   block (the one with just flex-direction/gap/padding) since this
+   one replaces it.
+   ============================================================ */
+
+.navbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.navbar-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--paper);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.navbar-toggle.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 14px 16px;
+  }
+
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    gap: 8px;
+    flex-wrap: nowrap;
+    margin-top: 0;
+    transition: max-height 0.25s ease, margin-top 0.25s ease;
+  }
+
+  .navbar-links.open {
+    max-height: 480px;
+    margin-top: 14px;
+  }
+
+  .navbar-links a {
+    width: 100%;
+  }
+
+  .navbar-links .nav-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Keep the phone-only tweaks from your existing 480px block, but the
+   .navbar-links / .nav-btn rules inside it are now superseded by the
+   640px block above — you can remove the duplicate 480px navbar rules
+   for those two selectors if you'd added any. */

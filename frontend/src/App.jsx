@@ -425,8 +425,6 @@ const totalPages = Math.ceil(
         </p>
       )}
 
-      <Navbar />
-
       {!search && (
         <>
           <ProductCarousel
@@ -571,6 +569,10 @@ const totalPages = Math.ceil(
 function App() {
   return (
     <>
+      {/* Navbar now lives here, above all Routes, so it shows on every page
+          (Cart, Checkout, Profile, Orders, Login, etc.) instead of only on Home */}
+      <Navbar />
+
       <Routes>
         <Route
           path="/"
