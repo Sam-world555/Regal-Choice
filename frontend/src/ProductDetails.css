@@ -290,3 +290,50 @@
 .description-markdown > *:last-child {
   margin-bottom: 0;
 }
+@media (max-width: 480px) {
+  .product-details {
+    padding-top: 24px;
+  }
+
+  .details-card {
+    padding: 16px;
+    gap: 20px;
+    border-radius: 14px;
+  }
+
+  .details-right h1 {
+    font-size: 22px;
+  }
+
+  .details-right .price {
+    font-size: 20px;
+  }
+
+  .thumbnail {
+    width: 52px;
+    height: 52px;
+  }
+
+  .details-right .description {
+    font-size: 14px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .quantity-selector {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .btn-outline,
+  .btn-solid {
+    padding: 13px 16px;
+    font-size: 13px;
+  }
+}

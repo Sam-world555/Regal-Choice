@@ -584,3 +584,77 @@ body {
     transition: none !important;
   }
 }
+/* ---------- Extra mobile fixes (phones) ---------- */
+@media (max-width: 480px) {
+  .navbar h2 {
+    font-size: 18px;
+  }
+
+  .navbar-links {
+    gap: 6px;
+  }
+
+  .nav-btn {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .brand-header h1 {
+    font-size: 30px;
+  }
+
+  .brand-header h2 {
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+
+  /* Search icon position was hardcoded for desktop width — fix for small screens */
+  .search-wrap {
+    padding: 0 4px;
+  }
+
+  .search-icon {
+    left: 24px;
+    transform: translateY(-50%);
+  }
+
+  .search-bar {
+    max-width: 100%;
+    padding: 12px 16px 12px 44px;
+    font-size: 14px;
+  }
+
+  .filter-bar {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card-body h3 {
+    font-size: 15px;
+  }
+
+  .card-description {
+    font-size: 12px;
+  }
+
+  .card-price {
+    font-size: 15px;
+  }
+
+  .add-to-cart-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+}

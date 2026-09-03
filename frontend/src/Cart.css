@@ -204,3 +204,41 @@
     width: 100%;
   }
 }
+@media (max-width: 480px) {
+  .cart-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .cart-item {
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .cart-item-image {
+    height: 160px;
+  }
+
+  .cart-item-body h3 {
+    font-size: 16px;
+  }
+
+  .cart-qty-selector {
+    gap: 10px;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .cart-total {
+    font-size: 19px;
+  }
+
+  .checkout-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
