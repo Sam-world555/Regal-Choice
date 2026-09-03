@@ -584,19 +584,38 @@ body {
     transition: none !important;
   }
 }
+
 /* ---------- Extra mobile fixes (phones) ---------- */
 @media (max-width: 480px) {
+  .navbar {
+    padding: 12px 14px;
+  }
+
   .navbar h2 {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .navbar-links {
-    gap: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
   }
 
   .nav-btn {
-    padding: 7px 10px;
-    font-size: 11px;
+    padding: 8px 12px;
+    font-size: 12px;
+    flex: 0 0 auto;
+  }
+
+  .nav-btn-with-badge {
+    padding-right: 22px;
+  }
+
+  .nav-badge {
+    position: absolute;
+    top: -4px;
+    right: 4px;
   }
 
   .brand-header h1 {
