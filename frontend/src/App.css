@@ -748,7 +748,7 @@ body {
 /* ---- Compact product cards on mobile (fix: cards were too tall) ---- */
 @media (max-width: 480px) {
   .card-image-wrap {
-    aspect-ratio: 1 / 1.15;
+    aspect-ratio: 1 / 1 !important;
   }
 
   .card-body {
