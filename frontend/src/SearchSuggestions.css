@@ -1,11 +1,6 @@
 /* Uses shared design tokens from App.css :root */
-
-.search-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-}
+/* .search-wrap is defined in App.css (position, flex centering) — do NOT
+   redefine it here, it was silently overriding App.css's layout on load */
 
 .search-suggestions-dropdown {
   position: absolute;
@@ -20,7 +15,6 @@
   overflow: hidden;
   text-align: left;
 }
-
 .search-suggestion-item {
   display: flex;
   align-items: center;
@@ -33,15 +27,12 @@
   cursor: pointer;
   transition: background 0.15s ease;
 }
-
 .search-suggestion-item:last-child {
   border-bottom: none;
 }
-
 .search-suggestion-item:hover {
   background: var(--paper);
 }
-
 .search-suggestion-image {
   width: 36px;
   height: 36px;
@@ -50,7 +41,6 @@
   flex-shrink: 0;
   background: #f1efe9;
 }
-
 .search-suggestion-name {
   flex: 1;
   font-size: 13px;
@@ -61,14 +51,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .search-suggestion-price {
   font-size: 12px;
   font-weight: 700;
   color: var(--wine);
   flex-shrink: 0;
 }
-
 .search-suggestion-empty {
   padding: 16px;
   margin: 0;
@@ -76,11 +64,9 @@
   color: var(--muted);
   text-align: center;
 }
-
 .search-popular {
   padding: 14px 16px;
 }
-
 .search-popular-label {
   margin: 0 0 10px;
   font-size: 11px;
@@ -89,13 +75,11 @@
   text-transform: uppercase;
   color: var(--muted);
 }
-
 .search-popular-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-
 .search-popular-tag {
   padding: 6px 14px;
   border: 1px solid var(--line);
@@ -108,7 +92,6 @@
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
-
 .search-popular-tag:hover {
   border-color: var(--wine);
   color: var(--wine);
