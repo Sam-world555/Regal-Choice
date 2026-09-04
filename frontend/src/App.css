@@ -11,10 +11,6 @@
   --muted: #6b6560;
   --shadow-soft: 0 18px 40px rgba(20, 20, 20, 0.08);
   --shadow-lift: 0 24px 48px rgba(20, 20, 20, 0.14);
-  --shadow-card: 0 4px 14px rgba(20, 20, 20, 0.06);
-  --radius-lg: 18px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
 }
 
 input,
@@ -31,7 +27,6 @@ textarea::placeholder {
 
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -39,7 +34,6 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- Navbar ---------- */
@@ -178,7 +172,7 @@ body {
   margin: 0;
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  font-size: clamp(28px, 8vw, 60px);
+  font-size: clamp(38px, 6vw, 60px);
   letter-spacing: 0.01em;
   color: var(--ink);
 }
@@ -235,10 +229,9 @@ body {
   box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.12);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 520px) {
   .search-icon {
-    left: 26px;
-    transform: translateY(-50%);
+    transform: translate(-136px, -50%);
   }
 }
 
@@ -290,12 +283,11 @@ body {
 .card {
   position: relative;
   background: var(--card);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-card);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
@@ -336,7 +328,6 @@ body {
   font-weight: 700;
   letter-spacing: 0.04em;
   z-index: 2;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
 .card-body {
@@ -344,7 +335,6 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 2px;
 }
 
 .card-title-link {
@@ -358,7 +348,6 @@ body {
   font-size: 19px;
   font-weight: 600;
   color: var(--ink);
-  line-height: 1.25;
   transition: color 0.2s ease;
 }
 
@@ -418,15 +407,12 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding-top: 6px;
-  border-top: 1px solid var(--line);
 }
 
 .card-price-row {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 .card-price {
@@ -454,7 +440,6 @@ body {
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  min-height: 40px;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
 
@@ -465,13 +450,6 @@ body {
 
 .add-to-cart-btn:active {
   transform: scale(0.97);
-}
-
-.add-to-cart-btn:disabled {
-  background: var(--line);
-  border-color: var(--line);
-  color: var(--muted);
-  cursor: not-allowed;
 }
 
 /* ---------- States ---------- */
@@ -551,10 +529,133 @@ body {
   color: var(--paper);
 }
 
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px 60px;
+  }
+
+  .brand-header {
+    padding: 44px 8px 28px;
+  }
+
+  .products {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .card-body {
+    padding: 14px 14px 16px;
+  }
+
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ---------- Extra mobile fixes (phones) ---------- */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 14px;
+  }
+
+  .navbar h2 {
+    font-size: 16px;
+  }
+
+  .navbar-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .nav-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    flex: 0 0 auto;
+  }
+
+  .nav-btn-with-badge {
+    padding-right: 22px;
+  }
+
+  .nav-badge {
+    position: absolute;
+    top: -4px;
+    right: 4px;
+  }
+
+  .brand-header h1 {
+    font-size: 30px;
+  }
+
+  .brand-header h2 {
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+
+  /* Search icon position was hardcoded for desktop width — fix for small screens */
+  .search-wrap {
+    padding: 0 4px;
+  }
+
+  .search-icon {
+    left: 24px;
+    transform: translateY(-50%);
+  }
+
+  .search-bar {
+    max-width: 100%;
+    padding: 12px 16px 12px 44px;
+    font-size: 14px;
+  }
+
+  .filter-bar {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card-body h3 {
+    font-size: 15px;
+  }
+
+  .card-description {
+    font-size: 12px;
+  }
+
+  .card-price {
+    font-size: 15px;
+  }
+
+  .add-to-cart-btn {
+    padding: 9px 12px;
+    font-size: 12px;
   }
 }
 
@@ -575,19 +676,13 @@ body {
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border: none;
   background: transparent;
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  border-radius: 999px;
-  transition: background 0.2s ease;
-}
-
-.navbar-toggle:active {
-  background: rgba(250, 249, 247, 0.1);
 }
 
 .navbar-toggle span {
@@ -647,158 +742,34 @@ body {
   .navbar-links .nav-btn {
     width: 100%;
     justify-content: center;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
   }
 }
 
-/* ============================================================
-   Compact mobile layout — applies to ALL phone widths
-   (widened from 480px to 640px: many phones report a CSS
-   viewport wider than 480px, which was leaving them on the
-   half-compacted "tablet" styles below — that was the bug)
-   ============================================================ */
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0 14px 60px;
-  }
-
-  .navbar {
-    padding: 10px 14px;
-  }
-
-  .navbar h2 {
-    font-size: 17px;
-  }
-
-  .navbar-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-  }
-
-  .nav-btn {
-    padding: 10px 14px;
-    font-size: 13px;
-    flex: 0 0 auto;
-    min-height: 40px;
-  }
-
-  .nav-btn-with-badge {
-    padding-right: 22px;
-  }
-
-  .nav-badge {
-    position: absolute;
-    top: -4px;
-    right: 4px;
-  }
-
-  /* Hero — brand text hidden on phones, search stays as the entry point */
-  .brand-header {
-    padding: 14px 14px 18px;
-  }
-
-  .brand-eyebrow,
-  .brand-header h1,
-  .brand-rule,
-  .brand-header h2 {
-    display: none;
-  }
-
-  /* Search */
-  .search-wrap {
-    padding: 0 4px;
-  }
-
-  .search-icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .search-bar {
-    max-width: 100%;
-    padding: 12px 16px 12px 46px;
-    font-size: 14px;
-    min-height: 44px;
-  }
-
-  /* Filters — horizontal scroll instead of cramped wrap */
-  .filter-bar {
-    width: 100%;
-    gap: 8px;
-    margin-top: 18px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding: 2px 2px 6px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .filter-bar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .filter-select {
-    flex: 0 0 auto;
-    min-width: max-content;
-    padding: 9px 14px;
-    font-size: 13px;
-    min-height: 38px;
-  }
-
-  .results-count {
-    margin: 12px 0 0;
-    font-size: 11px;
-  }
-
-  /* Product grid — fixed 2 per row, cards stay at carousel's 150px size (no stretch) */
-  .products {
-    grid-template-columns: repeat(2, 150px);
-    justify-content: start;
-    gap: 14px;
-    margin-top: 16px;
-  }
-
-  .card {
-    border-radius: 14px;
-  }
-
+/* ---- Compact product cards on mobile (fix: cards were too tall) ---- */
+@media (max-width: 480px) {
   .card-image-wrap {
-    aspect-ratio: 3 / 4;
-    height: auto;
-  }
-
-  .sale-badge {
-    top: 6px;
-    left: 6px;
-    padding: 3px 7px;
-    font-size: 9px;
+    aspect-ratio: unset;
+    height: 170px;
   }
 
   .card-body {
-    padding: 12px 14px 14px;
-    gap: 3px;
-  }
-
-  .card-category,
-  .stock-badge-pill {
-    display: none;
+    padding: 10px 12px 12px;
   }
 
   .card-body h3 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    margin: 0 0 2px;
+  }
+
+  .card-category {
+    font-size: 9px;
     margin: 0 0 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 0;
+  }
+
+  .stock-badge-pill {
+    font-size: 9px;
+    padding: 2px 8px;
+    margin: 0 0 6px;
   }
 
   .card-description {
@@ -806,19 +777,14 @@ body {
   }
 
   .card-footer {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    padding-top: 6px;
-  }
-
-  .card-price-row {
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+    gap: 6px;
   }
 
   .card-price {
     font-size: 13px;
-    color: var(--wine);
   }
 
   .card-price-original {
@@ -826,36 +792,59 @@ body {
   }
 
   .add-to-cart-btn {
-    width: 100%;
-    padding: 7px 8px;
-    font-size: 10.5px;
-    min-height: 32px;
-  }
-
-  /* Pagination — tighter, still tappable */
-  .pagination {
-    gap: 6px;
-    margin-top: 32px;
-  }
-
-  .page-btn {
-    min-width: 36px;
-    height: 36px;
-    font-size: 13px;
+    width: auto;
+    padding: 6px 10px;
+    font-size: 10px;
   }
 }
 
-/* Extra-narrow phones (<=360px) get slightly tighter grid gap */
-@media (max-width: 360px) {
-  .products {
-    gap: 8px;
+/* ---- Compact hero / search / filter on mobile ---- */
+@media (max-width: 480px) {
+  .brand-header {
+    padding: 24px 12px 20px;
   }
 
-  .card-body {
-    padding: 8px 10px 10px;
+  .brand-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin: 0 0 6px;
   }
 
-  .card-body h3 {
-    font-size: 12.5px;
+  .brand-header h1 {
+    font-size: 26px;
+  }
+
+  .brand-rule {
+    margin: 12px auto;
+  }
+
+  .brand-header h2 {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin: 0 0 20px;
+  }
+
+  .search-bar {
+    padding: 10px 14px 10px 40px;
+    font-size: 13px;
+  }
+
+  .search-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .filter-bar {
+    margin-top: 16px;
+  }
+
+  .filter-select {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .results-count {
+    margin: 12px 0 0;
+    font-size: 11px;
   }
 }
