@@ -178,7 +178,7 @@ body {
   margin: 0;
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
-  font-size: clamp(38px, 6vw, 60px);
+  font-size: clamp(28px, 8vw, 60px);
   letter-spacing: 0.01em;
   color: var(--ink);
 }
@@ -235,9 +235,10 @@ body {
   box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.12);
 }
 
-@media (max-width: 520px) {
+@media (max-width: 640px) {
   .search-icon {
-    transform: translate(-136px, -50%);
+    left: 26px;
+    transform: translateY(-50%);
   }
 }
 
@@ -550,36 +551,6 @@ body {
   color: var(--paper);
 }
 
-/* ---------- Responsive (tablet) ---------- */
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0 16px 60px;
-  }
-
-  .brand-header {
-    padding: 44px 8px 28px;
-  }
-
-  .products {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 16px;
-  }
-
-  .card-body {
-    padding: 14px 14px 16px;
-  }
-
-  .card-footer {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .add-to-cart-btn {
-    width: 100%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -683,10 +654,17 @@ body {
 }
 
 /* ============================================================
-   Phone refinements (<=480px)
+   Compact mobile layout — applies to ALL phone widths
+   (widened from 480px to 640px: many phones report a CSS
+   viewport wider than 480px, which was leaving them on the
+   half-compacted "tablet" styles below — that was the bug)
    ============================================================ */
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .container {
+    padding: 0 14px 60px;
+  }
+
   .navbar {
     padding: 10px 14px;
   }
@@ -731,7 +709,6 @@ body {
   }
 
   .brand-header h1 {
-    font-size: 28px;
     line-height: 1.15;
   }
 
@@ -745,14 +722,9 @@ body {
     margin: 0 0 20px;
   }
 
-  /* Search — icon position fixed for narrow width, no hardcoded desktop offset */
+  /* Search */
   .search-wrap {
     padding: 0 4px;
-  }
-
-  .search-icon {
-    left: 26px;
-    transform: translateY(-50%);
   }
 
   .search-icon svg {
@@ -888,5 +860,20 @@ body {
     min-width: 36px;
     height: 36px;
     font-size: 13px;
+  }
+}
+
+/* Extra-narrow phones (<=360px) get slightly tighter grid gap */
+@media (max-width: 360px) {
+  .products {
+    gap: 8px;
+  }
+
+  .card-body {
+    padding: 8px 10px 10px;
+  }
+
+  .card-body h3 {
+    font-size: 12.5px;
   }
 }
