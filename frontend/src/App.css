@@ -759,7 +759,7 @@ body {
   /* Product grid — fixed 2 per row, cards stay at carousel's 150px size (no stretch) */
   .products {
     grid-template-columns: repeat(2, 150px);
-    justify-content: center;
+    justify-content: start;
     gap: 14px;
     margin-top: 16px;
   }
