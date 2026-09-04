@@ -756,9 +756,10 @@ body {
     font-size: 11px;
   }
 
-  /* Product grid — fixed 2 per row, standard mobile layout */
+  /* Product grid — fixed 2 per row, cards stay at carousel's 150px size (no stretch) */
   .products {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 150px);
+    justify-content: center;
     gap: 14px;
     margin-top: 16px;
   }
