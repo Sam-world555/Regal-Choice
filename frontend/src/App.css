@@ -121,25 +121,6 @@ body {
   line-height: 1;
 }
 
-@media (max-width: 640px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-  }
-
-  .navbar-links {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .nav-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-}
-
 .container {
   max-width: 1240px;
   margin: 0 auto;
@@ -677,13 +658,9 @@ body {
     font-size: 12px;
   }
 }
+
 /* ============================================================
-   ADD THIS TO App.css — replaces/extends the existing
-   .navbar / .navbar-links / @media(max-width:640px) .navbar rules.
-   Paste this block right after your existing .nav-badge rule
-   and DELETE the old "@media (max-width: 640px) { .navbar {...} }"
-   block (the one with just flex-direction/gap/padding) since this
-   one replaces it.
+   Navbar hamburger toggle (mobile only)
    ============================================================ */
 
 .navbar-top {
@@ -768,7 +745,105 @@ body {
   }
 }
 
-/* Keep the phone-only tweaks from your existing 480px block, but the
-   .navbar-links / .nav-btn rules inside it are now superseded by the
-   640px block above — you can remove the duplicate 480px navbar rules
-   for those two selectors if you'd added any. */
+/* ---- Compact product cards on mobile (fix: cards were too tall) ---- */
+@media (max-width: 480px) {
+  .card-image-wrap {
+    aspect-ratio: 3 / 3.6;
+  }
+
+  .card-body {
+    padding: 10px 12px 12px;
+  }
+
+  .card-body h3 {
+    font-size: 13px;
+    margin: 0 0 2px;
+  }
+
+  .card-category {
+    font-size: 9px;
+    margin: 0 0 4px;
+  }
+
+  .stock-badge-pill {
+    font-size: 9px;
+    padding: 2px 8px;
+    margin: 0 0 6px;
+  }
+
+  .card-description {
+    display: none;
+  }
+
+  .card-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .card-price {
+    font-size: 13px;
+  }
+
+  .card-price-original {
+    font-size: 10px;
+  }
+
+  .add-to-cart-btn {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}
+
+/* ---- Compact hero / search / filter on mobile ---- */
+@media (max-width: 480px) {
+  .brand-header {
+    padding: 24px 12px 20px;
+  }
+
+  .brand-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    margin: 0 0 6px;
+  }
+
+  .brand-header h1 {
+    font-size: 26px;
+  }
+
+  .brand-rule {
+    margin: 12px auto;
+  }
+
+  .brand-header h2 {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin: 0 0 20px;
+  }
+
+  .search-bar {
+    padding: 10px 14px 10px 40px;
+    font-size: 13px;
+  }
+
+  .search-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .filter-bar {
+    margin-top: 16px;
+  }
+
+  .filter-select {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .results-count {
+    margin: 12px 0 0;
+    font-size: 11px;
+  }
+}
