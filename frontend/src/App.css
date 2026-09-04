@@ -569,11 +569,11 @@ body {
 /* ---------- Extra mobile fixes (phones) ---------- */
 @media (max-width: 480px) {
   .navbar {
-    padding: 12px 14px;
+    padding: 8px 14px;
   }
 
   .navbar h2 {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .navbar-links {
@@ -711,7 +711,7 @@ body {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 14px 16px;
+    padding: 10px 16px;
   }
 
   .navbar-toggle {
@@ -748,7 +748,8 @@ body {
 /* ---- Compact product cards on mobile (fix: cards were too tall) ---- */
 @media (max-width: 480px) {
   .card-image-wrap {
-    aspect-ratio: 1 / 1 !important;
+    aspect-ratio: unset;
+    height: 170px;
   }
 
   .card-body {
