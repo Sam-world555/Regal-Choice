@@ -59,7 +59,7 @@ const loginUser = async (req, res) => {
       {
         id: user._id,
       },
-      "mysecretkey",
+      process.env.JWT_SECRET,
       {
         expiresIn: "7d",
       }
@@ -246,7 +246,7 @@ const loginWithOTP = async (req, res) => {
       {
         id: user._id,
       },
-      "mysecretkey",
+      process.env.JWT_SECRET,
       {
         expiresIn: "7d",
       }
