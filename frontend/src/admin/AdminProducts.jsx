@@ -1,25 +1,201 @@
 import { API_URL } from "../config";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "../Admin.css";
+import "../ConfirmModal.css";
 import { toast } from "react-toastify";
+import ConfirmModal from "../ConfirmModal";
 
-function AdminOrders() {
-  const navigate = useNavigate();
+const CATEGORY_OPTIONS = [
+  "T-Shirt",
+  "Shirt",
+  "Jeans",
+  "Trouser",
+  "Hoodie",
+  "Jacket",
+  "Sweater",
+  "Shorts",
+  "Kurta",
+  "Ethnic Wear",
+  "Activewear",
+  "Innerwear",
+];
 
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+function AdminProducts() {
+  const [products, setProducts] = useState([]);
+  const [editingId, setEditingId] = useState(null);
 
-  const fetchOrders = async () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [stock, setStock] = useState("");
+  const [sku, setSku] = useState("");
+  const [featured, setFeatured] = useState(false);
+  const [bestseller, setBestseller] = useState(false);
+
+  const [images, setImages] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  const fileInputRef = useRef(null);
+  const dragIndexRef = useRef(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const fetchProducts = async () => {
     try {
-      setLoading(true);
+      const response = await axios.get(
+        API_URL + "/api/products"
+      );
+      setProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const urls = images.map((img) => URL.createObjectURL(img));
+    setPreviewUrls(urls);
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [images]);
+
+  const handleImagesSelected = (e) => {
+    setImages(Array.from(e.target.files));
+  };
+
+  const handleDragStart = (index) => {
+    dragIndexRef.current = index;
+  };
+
+  const handleDragEnter = (index) => {
+    setDragOverIndex(index);
+  };
+
+  const handleDragEnd = () => {
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (dropIndex) => {
+    const dragIndex = dragIndexRef.current;
+
+    if (dragIndex === null || dragIndex === dropIndex) {
+      setDragOverIndex(null);
+      return;
+    }
+
+    setImages((prev) => {
+      const updated = [...prev];
+      const [moved] = updated.splice(dragIndex, 1);
+      updated.splice(dropIndex, 0, moved);
+      return updated;
+    });
+
+    dragIndexRef.current = null;
+    setDragOverIndex(null);
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name || !price || !category) {
+      toast.warning("Fill all fields");
+      return;
+    }
+
+    const token = sessionStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("stock", stock === "" ? 0 : stock);
+    formData.append("sku", sku);
+    formData.append("featured", featured);
+    formData.append("bestseller", bestseller);
+
+    // Images are appended in the order shown in the preview row —
+    // the first one becomes the main product image on the backend.
+    images.forEach((img) => {
+      formData.append("images", img);
+    });
+
+    try {
+      setSubmitting(true);
+
+      if (editingId) {
+        await axios.put(
+          `${API_URL}/api/products/${editingId}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        toast.success("Product Updated Successfully!");
+      } else {
+        await axios.post(
+          API_URL + "/api/products",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        toast.success("Product Added Successfully!");
+      }
+
+      setEditingId(null);
+      setName("");
+      setPrice("");
+      setCategory("");
+      setDescription("");
+      setStock("");
+      setSku("");
+      setFeatured(false);
+      setBestseller(false);
+      setImages([]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
+      fetchProducts();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      setDeleting(true);
 
       const token = sessionStorage.getItem("token");
 
-      const response = await axios.get(
-        API_URL + "/api/orders",
+      await axios.delete(
+        `${API_URL}/api/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -27,135 +203,275 @@ function AdminOrders() {
         }
       );
 
-      setOrders(response.data);
+      toast.success("Product Deleted!");
+      setDeleteTarget(null);
+      fetchProducts();
     } catch (error) {
       console.log(error);
-      toast.error("Failed to load orders.");
+      toast.error("Failed to delete product.");
     } finally {
-      setLoading(false);
+      setDeleting(false);
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const handleEdit = (product) => {
+    setEditingId(product._id);
+    setName(product.name);
+    setPrice(product.price);
+    setCategory(product.category);
+    setDescription(product.description);
+    setStock(product.stock ?? "");
+    setSku(product.sku || "");
+    setFeatured(product.featured || false);
+    setBestseller(product.bestseller || false);
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Delivered":
-        return "status-pill status-delivered";
-      case "Shipped":
-        return "status-pill status-shipped";
-      case "Processing":
-        return "status-pill status-processing";
-      case "Cancelled":
-        return "status-pill status-cancelled";
-      default:
-        return "status-pill status-pending";
-    }
+    // Agar images edit ke time change nahi karni hain
+    setImages([]);
   };
-
-  const sortedOrders = useMemo(
-    () =>
-      [...orders].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      ),
-    [orders]
-  );
-
-  const visibleOrders = useMemo(() => {
-    if (!search.trim()) return sortedOrders;
-
-    const term = search.trim().toLowerCase();
-
-    return sortedOrders.filter((order) => {
-      const idMatch = order._id.toLowerCase().includes(term);
-      const nameMatch = order.items.some((item) =>
-        item.product?.name?.toLowerCase().includes(term)
-      );
-      const customerMatch =
-        order.user?.name?.toLowerCase().includes(term) ||
-        order.user?.email?.toLowerCase().includes(term);
-      return idMatch || nameMatch || customerMatch;
-    });
-  }, [sortedOrders, search]);
 
   return (
     <>
-      <h2 className="section-title">
-        All Orders{orders.length > 0 && ` (${orders.length})`}
-      </h2>
+      <div className="admin-panel">
+        <h2 className="panel-title">
+          {editingId ? "Update Product" : "Add New Product"}
+        </h2>
 
-      {!loading && orders.length > 0 && (
-        <input
-          type="text"
-          placeholder="Search by Order ID, customer, or product..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="orders-search-input"
-        />
-      )}
+        <form onSubmit={handleSubmit} className="admin-form">
+          <div className="form-grid">
+            <input
+              type="text"
+              placeholder="Product Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="admin-input"
+            />
 
-      {loading ? (
-        <p className="empty-note">Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <p className="empty-note">No orders yet.</p>
-      ) : visibleOrders.length === 0 ? (
-        <p className="empty-note">No orders match your search.</p>
-      ) : (
-        <div className="orders-list">
-          {visibleOrders.map((order) => {
-            const firstItem = order.items[0];
-            const extraCount = order.items.length - 1;
+            <input
+              type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="admin-input"
+            />
 
-            return (
-              <button
-                key={order._id}
-                className="order-row"
-                onClick={() => navigate(`/admin/orders/${order._id}`)}
-              >
-                <img
-                  src={
-                    firstItem?.product?.images?.[0] ||
-                    firstItem?.product?.image ||
-                    "/no-image.png"
-                  }
-                  alt={firstItem?.product?.name}
-                  className="order-row-image"
-                />
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="admin-input"
+            >
+              <option value="">Select Category</option>
+              {CATEGORY_OPTIONS.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
 
-                <div className="order-row-body">
-                  <h3 className="order-row-title">
-                    {firstItem?.product?.name}
-                    {extraCount > 0 && (
-                      <span className="order-row-extra">
-                        {" "}
-                        +{extraCount} more
-                      </span>
+            <input
+              type="number"
+              placeholder="Stock Quantity"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              className="admin-input"
+              min="0"
+            />
+
+            <input
+              type="text"
+              placeholder="SKU (e.g. RC-TSH-BLU-01)"
+              value={sku}
+              onChange={(e) => setSku(e.target.value)}
+              className="admin-input"
+            />
+
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="admin-input"
+            />
+          </div>
+
+          <div className="admin-checkbox-row">
+            <label className="admin-checkbox-label">
+              <input
+                type="checkbox"
+                checked={featured}
+                onChange={(e) => setFeatured(e.target.checked)}
+              />
+              Featured Product
+            </label>
+
+            <label className="admin-checkbox-label">
+              <input
+                type="checkbox"
+                checked={bestseller}
+                onChange={(e) => setBestseller(e.target.checked)}
+              />
+              Bestseller
+            </label>
+          </div>
+
+          <label className="file-label">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImagesSelected}
+              className="file-input"
+            />
+            Choose Product Images
+          </label>
+
+          {images.length > 0 && (
+            <>
+              <p className="preview-hint">
+                Drag to reorder — the first image becomes the main product photo.
+              </p>
+
+              <div className="preview-row">
+                {previewUrls.map((url, index) => (
+                  <div
+                    key={url}
+                    className={
+                      dragOverIndex === index
+                        ? "preview-thumb-wrap drag-over"
+                        : "preview-thumb-wrap"
+                    }
+                    draggable
+                    onDragStart={() => handleDragStart(index)}
+                    onDragEnter={() => handleDragEnter(index)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(index)}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <img src={url} alt="" className="preview-thumb" />
+
+                    {index === 0 && (
+                      <span className="preview-main-badge">Main</span>
                     )}
-                  </h3>
 
-                  <p className="order-row-meta">
-                    Order #{order._id.slice(-6)} · {order.user?.name || "Unknown"}
-                  </p>
+                    <button
+                      type="button"
+                      className="preview-remove-btn"
+                      onClick={() => handleRemoveImage(index)}
+                      aria-label="Remove image"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
-                  <p className="order-row-total">
-                    ₹{Number(order.totalPrice || 0).toLocaleString()}
-                  </p>
+          <button type="submit" className="submit-btn" disabled={submitting}>
+            {submitting
+              ? editingId
+                ? "Updating..."
+                : "Adding..."
+              : editingId
+              ? "Update Product"
+              : "Add Product"}
+          </button>
+        </form>
+      </div>
+
+      <h2 className="section-title">All Products</h2>
+
+      <div className="admin-products-grid">
+        {products.length === 0 ? (
+          <p className="empty-note">No products yet.</p>
+        ) : (
+          products.map((product) => (
+            <div key={product._id} className="admin-product-card">
+              <img
+                src={product.images?.[0] || product.image || "/no-image.png"}
+                alt={product.name}
+                className="admin-product-image"
+              />
+
+              <div className="admin-product-body">
+                <h2 className="admin-product-name">{product.name}</h2>
+
+                {(product.featured || product.bestseller) && (
+                  <div className="admin-product-tags">
+                    {product.featured && (
+                      <span className="admin-tag-featured">Featured</span>
+                    )}
+                    {product.bestseller && (
+                      <span className="admin-tag-bestseller">Bestseller</span>
+                    )}
+                  </div>
+                )}
+
+                {product.sku && (
+                  <p className="admin-product-sku">SKU: {product.sku}</p>
+                )}
+
+                <p>
+                  <strong>Price:</strong> ₹{Number(product.price).toLocaleString()}
+                </p>
+
+                <p>
+                  <strong>Category:</strong> {product.category}
+                </p>
+
+                <p>
+                  <strong>Stock:</strong>{" "}
+                  <span
+                    className={
+                      !product.stock || product.stock <= 0
+                        ? "admin-stock-out"
+                        : product.stock <= 5
+                        ? "admin-stock-low"
+                        : "admin-stock-ok"
+                    }
+                  >
+                    {product.stock || 0}
+                  </span>
+                </p>
+
+                <p className="admin-product-desc">{product.description}</p>
+
+                <div className="admin-product-actions">
+                  <button
+                    onClick={() => handleEdit(product)}
+                    className="edit-btn"
+                  >
+                    ✏ Edit
+                  </button>
+
+                  <button
+                    onClick={() => setDeleteTarget(product)}
+                    className="delete-btn"
+                  >
+                    🗑 Delete
+                  </button>
                 </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
-                <span className={getStatusClass(order.status)}>
-                  {order.status}
-                </span>
-
-                <span className="order-row-arrow">›</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
+      <ConfirmModal
+        open={!!deleteTarget}
+        title="Delete Product?"
+        message={
+          deleteTarget
+            ? `Are you sure you want to delete "${deleteTarget.name}"? This action cannot be undone.`
+            : ""
+        }
+        confirmLabel="Delete"
+        onConfirm={() => handleDelete(deleteTarget._id)}
+        onCancel={() => setDeleteTarget(null)}
+        loading={deleting}
+      />
     </>
   );
 }
 
-export default AdminOrders;
+export default AdminProducts;
