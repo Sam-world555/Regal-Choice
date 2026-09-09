@@ -1,40 +1,17 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// ---------- Separate transporters per purpose ----------
-// Add the matching env vars to your .env file (see bottom of this file for the list)
+// ---------- Resend client ----------
+// Render blocks outbound SMTP ports (465/587), so we use Resend's HTTP API instead.
+// Add RESEND_API_KEY to your .env file (see bottom of this file).
 
-const otpTransporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
-  auth: {
-    user: process.env.OTP_EMAIL_USER,
-    pass: process.env.OTP_EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const orderTransporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
-  auth: {
-    user: process.env.ORDER_EMAIL_USER,
-    pass: process.env.ORDER_EMAIL_PASS,
-  },
-});
-
-const supportTransporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  family: 4,
-  auth: {
-    user: process.env.SUPPORT_EMAIL_USER,
-    pass: process.env.SUPPORT_EMAIL_PASS,
-  },
-});
+// IMPORTANT:
+// Until you verify your own domain on Resend, the "from" address MUST be
+// "onboarding@resend.dev", and you can only send TO the email address you
+// signed up to Resend with. Once you verify a domain (Resend dashboard -> Domains),
+// replace FROM_ADDRESS below with something like "orders@yourdomain.com".
+const FROM_ADDRESS = "Regal Choice <onboarding@resend.dev>";
 
 const generateOTP = () => {
   // 6-digit numeric OTP
@@ -66,12 +43,18 @@ const sendOTPEmail = async (toEmail, otp, purpose = "verification") => {
       <p style="color: #6b6560; font-size: 12px;">If you did not request this, you can safely ignore this email.</p>
     </div>
   `;
-  await otpTransporter.sendMail({
-    from: `"Regal Choice" <${process.env.OTP_EMAIL_USER}>`,
+
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
     to: toEmail,
     subject,
     html,
   });
+
+  if (error) {
+    console.log("OTP EMAIL ERROR:", error);
+    throw new Error(error.message || "Failed to send OTP email");
+  }
 };
 
 // ---------- shared order-items table builder ----------
@@ -87,7 +70,7 @@ const buildOrderItemsHtml = (items) =>
     )
     .join("");
 
-// ---------- Admin notification (new order) — sent FROM Order-Confirmation account ----------
+// ---------- Admin notification (new order) ----------
 const sendAdminOrderNotification = async (order) => {
   const adminEmail = "regalchoice786@gmail.com";
 
@@ -115,15 +98,19 @@ const sendAdminOrderNotification = async (order) => {
     </div>
   `;
 
-  await orderTransporter.sendMail({
-    from: `"Regal Choice Orders" <${process.env.ORDER_EMAIL_USER}>`,
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
     to: adminEmail,
     subject: `New Order Received — #${order._id}`,
     html,
   });
+
+  if (error) {
+    console.log("ADMIN ORDER EMAIL ERROR:", error);
+  }
 };
 
-// ---------- Order confirmation — sent to the CUSTOMER, FROM Order-Confirmation account ----------
+// ---------- Order confirmation — sent to the CUSTOMER ----------
 const sendOrderConfirmationEmail = async (order) => {
   const customerEmail = order.customerEmail || order.user?.email;
   if (!customerEmail) return;
@@ -152,12 +139,16 @@ const sendOrderConfirmationEmail = async (order) => {
     </div>
   `;
 
-  await orderTransporter.sendMail({
-    from: `"Regal Choice Orders" <${process.env.ORDER_EMAIL_USER}>`,
+  const { error } = await resend.emails.send({
+    from: FROM_ADDRESS,
     to: customerEmail,
     subject: `Your Regal Choice Order is Confirmed — #${order._id}`,
     html,
   });
+
+  if (error) {
+    console.log("CUSTOMER ORDER CONFIRMATION EMAIL ERROR:", error);
+  }
 };
 
 module.exports = {
@@ -168,21 +159,15 @@ module.exports = {
 };
 
 /*
-  ---------- Add these to your .env file ----------
+  ---------- Add this to your .env file (and to Render's Environment tab) ----------
 
-  OTP_EMAIL_USER=loginverifyregalchoice@gmail.com
-  OTP_EMAIL_PASS=<app password for this account>
+  RESEND_API_KEY=<your Resend API key>
 
-  ORDER_EMAIL_USER=orderconfirmationregalchoice@gmail.com
-  ORDER_EMAIL_PASS=<app password for this account>
-
-  SUPPORT_EMAIL_USER=customercaresupportregalchoice@gmail.com
-  SUPPORT_EMAIL_PASS=<app password for this account>
-
-  (supportTransporter is set up above and ready for when you build
-   a "contact support" feature — not wired to anything yet)
-
-  Note: each Gmail account needs its own 16-character "App Password"
-  (Google Account -> Security -> 2-Step Verification -> App Passwords).
-  Your regular Gmail login password will NOT work here.
+  ---------- IMPORTANT while testing (before verifying a domain) ----------
+  - "from" must stay as "onboarding@resend.dev" (already set above)
+  - Resend will only let you send TO the email address you signed up with
+    (e.g. sameerdyer200@gmail.com) until you verify your own domain.
+  - To send to real customers, go to Resend dashboard -> Domains -> Add your
+    domain, follow the DNS verification steps, then change FROM_ADDRESS above
+    to something like "Regal Choice <orders@yourdomain.com>".
 */
