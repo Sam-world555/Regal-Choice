@@ -27,11 +27,10 @@ body {
   flex-direction: column;
 }
 
-/* Flex children must be allowed to shrink below their content width,
-   otherwise a long carousel stretches the whole page on phones */
+/* Lets flex children shrink below their content width (fixes phone zoom-out).
+   No max-width here, otherwise it overrides .container's 1240px limit on desktop. */
 #root > * {
   min-width: 0;
-  max-width: 100%;
 }
 
 img {
