@@ -1,9 +1,8 @@
-/* Base reset — kept minimal since App.css owns the actual site design.
-   The old Vite template boilerplate (fixed #root width, purple accent,
-   dark-mode overrides) has been removed since it was fighting with
-   App.css's .container width and color tokens. */
+/* Base reset — kept minimal since App.css owns the actual site design. */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -11,16 +10,33 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 #root {
+  width: 100%;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+}
+
+/* Flex children must be allowed to shrink below their content width,
+   otherwise a long carousel stretches the whole page on phones */
+#root > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 h1,
