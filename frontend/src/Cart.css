@@ -242,3 +242,24 @@
     font-size: 14px;
   }
 }
+/* ---------- Mobile: show the full product photo in cart ---------- */
+@media (max-width: 640px) {
+  .cart-item {
+    flex-direction: column;
+  }
+
+  .cart-item .cart-item-image {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center top;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .cart-item .cart-item-body {
+    width: 100%;
+  }
+}
