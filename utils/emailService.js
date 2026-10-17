@@ -2,16 +2,16 @@ const { Resend } = require("resend");
 
 // ---------- Resend client ----------
 // Render blocks outbound SMTP ports (465/587), so we use Resend's HTTP API instead.
-// Add RESEND_API_KEY to your .env file (see bottom of this file).
+// RESEND_API_KEY must be set in Render's Environment tab (and in your local .env).
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// IMPORTANT:
-// Until you verify your own domain on Resend, the "from" address MUST be
-// "onboarding@resend.dev", and you can only send TO the email address you
-// signed up to Resend with. Once you verify a domain (Resend dashboard -> Domains),
-// replace FROM_ADDRESS below with something like "orders@yourdomain.com".
-const FROM_ADDRESS = "Regal Choice <onboarding@resend.dev>";
+// Domain "regalchoice.fashion" is verified on Resend, so emails can now be
+// sent to ANY recipient. The part before @ can be any name (no mailbox needed).
+const FROM_ADDRESS = "Regal Choice <noreply@regalchoice.fashion>";
+
+// Where customers should write to (a real inbox, since noreply@ cannot receive mail)
+const SUPPORT_EMAIL = "loginverfyregalchoice@gmail.com";
 
 const generateOTP = () => {
   // 6-digit numeric OTP
@@ -72,7 +72,7 @@ const buildOrderItemsHtml = (items) =>
 
 // ---------- Admin notification (new order) ----------
 const sendAdminOrderNotification = async (order) => {
-  const adminEmail = "regalchoice786@gmail.com";
+  const adminEmail = SUPPORT_EMAIL;
 
   const itemsHtml = buildOrderItemsHtml(order.items);
   const customerName = order.customerName || order.user?.name || "N/A";
@@ -135,7 +135,7 @@ const sendOrderConfirmationEmail = async (order) => {
         <p style="text-align: right; font-size: 16px; font-weight: 700; color: #7a1f3d;">Total: ₹${totalAmount}</p>
       </div>
       <p style="color: #6b6560; font-size: 14px;">Expected delivery: 3-5 business days.</p>
-      <p style="color: #6b6560; font-size: 12px; margin-top: 24px;">Questions about your order? Just reply to this email and our support team will help.</p>
+      <p style="color: #6b6560; font-size: 12px; margin-top: 24px;">Questions about your order? Write to us at <a href="mailto:${SUPPORT_EMAIL}" style="color: #7a1f3d;">${SUPPORT_EMAIL}</a> and our support team will help.</p>
     </div>
   `;
 
@@ -159,15 +159,12 @@ module.exports = {
 };
 
 /*
-  ---------- Add this to your .env file (and to Render's Environment tab) ----------
+  ---------- Environment ----------
 
   RESEND_API_KEY=<your Resend API key>
+  (set it in your local .env AND in Render's Environment tab; never put the
+  key inside this file or commit it to GitHub)
 
-  ---------- IMPORTANT while testing (before verifying a domain) ----------
-  - "from" must stay as "onboarding@resend.dev" (already set above)
-  - Resend will only let you send TO the email address you signed up with
-    (e.g. sameerdyer200@gmail.com) until you verify your own domain.
-  - To send to real customers, go to Resend dashboard -> Domains -> Add your
-    domain, follow the DNS verification steps, then change FROM_ADDRESS above
-    to something like "Regal Choice <orders@yourdomain.com>".
+  The domain regalchoice.fashion is verified on Resend, so FROM_ADDRESS above
+  works for any recipient.
 */
