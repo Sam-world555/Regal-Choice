@@ -10,8 +10,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // sent to ANY recipient. The part before @ can be any name (no mailbox needed).
 const FROM_ADDRESS = "Regal Choice <noreply@regalchoice.fashion>";
 
+// Inbox that receives "New Order Received" notifications (admin side)
+const ORDER_NOTIFY_EMAIL =
+  process.env.ORDER_EMAIL_USER || "orderconfirmationregalchoice@gmail.com";
+
 // Where customers should write to (a real inbox, since noreply@ cannot receive mail)
-const SUPPORT_EMAIL = "loginverfyregalchoice@gmail.com";
+const SUPPORT_EMAIL =
+  process.env.SUPPORT_EMAIL_USER || "customercaresupportregalchoice@gmail.com";
 
 const generateOTP = () => {
   // 6-digit numeric OTP
@@ -72,7 +77,7 @@ const buildOrderItemsHtml = (items) =>
 
 // ---------- Admin notification (new order) ----------
 const sendAdminOrderNotification = async (order) => {
-  const adminEmail = SUPPORT_EMAIL;
+  const adminEmail = ORDER_NOTIFY_EMAIL;
 
   const itemsHtml = buildOrderItemsHtml(order.items);
   const customerName = order.customerName || order.user?.name || "N/A";
