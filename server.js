@@ -17,13 +17,26 @@ const paymentRoutes = require("./routes/paymentRoutes");
 connectDB();
 const app = express();
 
+// Websites that are allowed to call this API
+const allowedOrigins = [
+  "https://regalchoice.fashion",
+  "https://www.regalchoice.fashion",
+  "https://regal-choice.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://regal-choice.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:5173",
-    ],
+    origin: function (origin, callback) {
+      // allow requests with no origin (Postman, server-to-server, etc.)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("CORS blocked origin:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
