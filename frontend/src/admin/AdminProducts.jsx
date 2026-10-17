@@ -46,9 +46,7 @@ function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(
-        API_URL + "/api/products"
-      );
+      const response = await axios.get(API_URL + "/api/products");
       setProducts(response.data);
     } catch (error) {
       console.log(error);
@@ -107,6 +105,23 @@ function AdminProducts() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const resetForm = () => {
+    setEditingId(null);
+    setName("");
+    setPrice("");
+    setCategory("");
+    setDescription("");
+    setStock("");
+    setSku("");
+    setFeatured(false);
+    setBestseller(false);
+    setImages([]);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -116,6 +131,11 @@ function AdminProducts() {
     }
 
     const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      toast.warning("Session expired. Please login again.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("name", name);
@@ -136,53 +156,55 @@ function AdminProducts() {
     try {
       setSubmitting(true);
 
+      // NOTE: Content-Type is NOT set manually for FormData.
+      // The browser sets "multipart/form-data" together with the
+      // required boundary automatically. Setting it by hand can break uploads.
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        timeout: 60000,
+      };
+
       if (editingId) {
         await axios.put(
           `${API_URL}/api/products/${editingId}`,
           formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
+          config
         );
 
         toast.success("Product Updated Successfully!");
       } else {
-        await axios.post(
-          API_URL + "/api/products",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        await axios.post(API_URL + "/api/products", formData, config);
 
         toast.success("Product Added Successfully!");
       }
 
-      setEditingId(null);
-      setName("");
-      setPrice("");
-      setCategory("");
-      setDescription("");
-      setStock("");
-      setSku("");
-      setFeatured(false);
-      setBestseller(false);
-      setImages([]);
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-
+      resetForm();
       fetchProducts();
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong.");
+      // Detailed logs so the real reason shows up in the browser console (F12)
+      console.log("ADD/UPDATE PRODUCT ERROR:", error);
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
+
+      let message = "Something went wrong.";
+
+      if (error.code === "ECONNABORTED") {
+        message = "Server is taking too long. Please try again.";
+      } else if (!error.response) {
+        message = "Cannot reach server. It may be waking up, try again in a minute.";
+      } else if (error.response.status === 401 || error.response.status === 403) {
+        message = "Not authorised. Please logout and login again.";
+      } else if (error.response.status === 413) {
+        message = "Image is too large. Try smaller images.";
+      } else if (error.response.data?.message) {
+        message = error.response.data.message;
+      } else if (typeof error.response.data === "string" && error.response.data) {
+        message = error.response.data.slice(0, 120);
+      }
+
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -194,14 +216,11 @@ function AdminProducts() {
 
       const token = sessionStorage.getItem("token");
 
-      await axios.delete(
-        `${API_URL}/api/products/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${API_URL}/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       toast.success("Product Deleted!");
       setDeleteTarget(null);
@@ -227,6 +246,8 @@ function AdminProducts() {
 
     // Agar images edit ke time change nahi karni hain
     setImages([]);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
