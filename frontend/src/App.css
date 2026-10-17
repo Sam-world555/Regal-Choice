@@ -798,3 +798,241 @@ body {
     font-size: 10px;
   }
 }
+
+/* ============================================================
+   "All Products" heading + trust strip (base styles)
+   ============================================================ */
+
+.section-heading {
+  margin: 40px 0 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--ink);
+}
+
+/* Hidden on phones, shown on desktop below */
+.trust-strip {
+  display: none;
+}
+
+/* ============================================================
+   DESKTOP ENHANCEMENT (>= 1025px)
+   Phones and tablets are not affected by anything below.
+   ============================================================ */
+
+@media (min-width: 1025px) {
+  /* ----- Navbar: aligned with page content, gold hover underline ----- */
+  .navbar {
+    padding: 18px max(40px, calc((100vw - 1400px) / 2));
+  }
+
+  .navbar h2 {
+    font-size: 26px;
+  }
+
+  .nav-btn {
+    position: relative;
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .nav-btn:hover {
+    background: transparent;
+  }
+
+  .nav-btn:not(.nav-btn-primary)::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 4px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .nav-btn:not(.nav-btn-primary):hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ----- Wider page ----- */
+  .container {
+    max-width: 1400px;
+    padding: 0 40px 100px;
+  }
+
+  /* ----- Hero ----- */
+  .brand-header {
+    padding: 100px 16px 56px;
+  }
+
+  .brand-header::before {
+    top: -160px;
+    width: 1000px;
+    height: 460px;
+  }
+
+  .brand-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 13px;
+    margin: 0 0 18px;
+  }
+
+  .brand-eyebrow::before,
+  .brand-eyebrow::after {
+    content: "";
+    width: 44px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .brand-header h1 {
+    font-size: clamp(60px, 6vw, 88px);
+    line-height: 1.05;
+  }
+
+  .brand-rule {
+    width: 84px;
+    margin: 28px auto;
+  }
+
+  .brand-header h2 {
+    font-size: 16px;
+    letter-spacing: 0.22em;
+    margin: 0 0 48px;
+  }
+
+  /* ----- Search ----- */
+  .search-wrap {
+    max-width: 640px;
+  }
+
+  .search-icon {
+    left: 24px;
+  }
+
+  .search-bar {
+    padding: 18px 28px 18px 58px;
+    font-size: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* ----- Filters ----- */
+  .filter-bar {
+    margin-top: 32px;
+    gap: 16px;
+  }
+
+  .filter-select {
+    padding: 13px 24px;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(20, 20, 20, 0.04);
+  }
+
+  .results-count {
+    margin-top: 30px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ----- Trust strip ----- */
+  .trust-strip {
+    display: flex;
+    max-width: 960px;
+    margin: 36px auto 8px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .trust-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .trust-item + .trust-item {
+    border-left: 1px solid var(--line);
+  }
+
+  .trust-item strong {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .trust-item span {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  /* ----- "All Products" heading ----- */
+  .section-heading {
+    margin-top: 72px;
+    font-size: 34px;
+    text-align: center;
+  }
+
+  .section-heading::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 2px;
+    margin: 16px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ----- Product grid: 4 clean columns ----- */
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .card {
+    border-radius: 18px;
+    box-shadow: 0 1px 3px rgba(20, 20, 20, 0.05);
+  }
+
+  .card-body {
+    padding: 22px 24px 26px;
+  }
+
+  .card-body h3 {
+    font-size: 20px;
+  }
+
+  .card-price {
+    font-size: 20px;
+  }
+
+  .add-to-cart-btn {
+    padding: 11px 22px;
+    font-size: 13px;
+  }
+
+  .pagination {
+    margin-top: 64px;
+  }
+}
+
+/* Very wide monitors */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1520px;
+  }
+
+  .navbar {
+    padding: 18px max(40px, calc((100vw - 1520px) / 2));
+  }
+}
