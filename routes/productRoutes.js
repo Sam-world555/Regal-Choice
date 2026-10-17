@@ -22,6 +22,26 @@ const {
 
 const upload = require("../middleware/uploadMiddleware");
 
+// Wraps multer/Cloudinary so that an upload failure returns a readable
+// JSON message instead of Express's default HTML "Internal Server Error" page.
+const uploadImages = (req, res, next) => {
+  upload.array("images", 5)(req, res, (err) => {
+    if (err) {
+      console.log("UPLOAD ERROR:", err);
+
+      const isMulterError = err.name === "MulterError";
+
+      return res.status(isMulterError ? 400 : 500).json({
+        message: `Image upload failed: ${
+          err.message || "unknown error"
+        }`,
+      });
+    }
+
+    next();
+  });
+};
+
 // ======================
 // Public Routes
 // ======================
@@ -47,7 +67,7 @@ router.post(
   "/",
   protect,
   admin,
-  upload.array("images", 5),
+  uploadImages,
   addProduct
 );
 
@@ -55,7 +75,7 @@ router.put(
   "/:id",
   protect,
   admin,
-  upload.array("images", 5),
+  uploadImages,
   updateProduct
 );
 

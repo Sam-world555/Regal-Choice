@@ -1,5 +1,8 @@
 const Product = require("../models/Product");
 
+// FormData sends booleans as the strings "true" / "false"
+const toBool = (value) => value === true || value === "true";
+
 // ADD PRODUCT
 const addProduct = async (req, res) => {
   try {
@@ -12,6 +15,9 @@ const addProduct = async (req, res) => {
       description,
       category,
       stock,
+      sku,
+      featured,
+      bestseller,
     } = req.body;
 
     if (!name || !price || !category) {
@@ -27,10 +33,13 @@ const addProduct = async (req, res) => {
 
     const product = await Product.create({
       name,
-      price,
-      description,
+      price: Number(price),
+      description: description || "",
       category,
-      stock,
+      stock: stock === undefined || stock === "" ? 0 : Number(stock),
+      sku: sku || "",
+      featured: toBool(featured),
+      bestseller: toBool(bestseller),
       image: images.length > 0 ? images[0] : "",
       images,
     });
@@ -111,6 +120,23 @@ const updateProduct = async (req, res) => {
       ...req.body,
     };
 
+    if (updateData.price !== undefined && updateData.price !== "") {
+      updateData.price = Number(updateData.price);
+    }
+
+    if (updateData.stock !== undefined) {
+      updateData.stock =
+        updateData.stock === "" ? 0 : Number(updateData.stock);
+    }
+
+    if (updateData.featured !== undefined) {
+      updateData.featured = toBool(updateData.featured);
+    }
+
+    if (updateData.bestseller !== undefined) {
+      updateData.bestseller = toBool(updateData.bestseller);
+    }
+
     if (req.files && req.files.length > 0) {
       updateData.images = req.files.map((file) => file.path);
       updateData.image = updateData.images[0];
@@ -135,6 +161,7 @@ const updateProduct = async (req, res) => {
       product,
     });
   } catch (error) {
+    console.log("UPDATE PRODUCT ERROR:", error);
     res.status(500).json({
       message: error.message,
     });
