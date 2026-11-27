@@ -31,12 +31,7 @@ import Profile from "./Profile";
 import "./Wishlist.css";
 import "./Carousel.css";
 import "./SearchSuggestions.css";
-import {
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
 function getStockInfo(stock) {
   if (!stock || stock <= 0) {
@@ -48,188 +43,102 @@ function getStockInfo(stock) {
   return { label: "In Stock", className: "stock-badge-in" };
 }
 
-const POPULAR_SEARCHES = [
-  "T-Shirt",
-  "Jeans",
-  "Hoodie",
-  "Shirt",
-  "Kurta",
-];
+const POPULAR_SEARCHES = ["T-Shirt", "Jeans", "Hoodie", "Shirt", "Kurta"];
 
 function Home() {
   const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
-const [loading, setLoading] = useState(false);
-
-const [category, setCategory] = useState("");
-
-const [sort, setSort] = useState("");
-
-const [currentPage, setCurrentPage] = useState(1);
-
-const productsPerPage = 8;
+  const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
   const [search, setSearch] = useState("");
   const [addingToCartId, setAddingToCartId] = useState(null);
   const [wishlistIds, setWishlistIds] = useState([]);
   const [togglingWishlistId, setTogglingWishlistId] = useState(null);
   const token = sessionStorage.getItem("token");
-
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const searchWrapRef = useRef(null);
 
-  useEffect(() => {
-  fetchProducts();
-}, [search]);
+  useEffect(() => { fetchProducts(); }, [search]);
+
+  useEffect(() => { if (token) { fetchWishlist(); } }, [token]);
 
   useEffect(() => {
-    if (token) {
-      fetchWishlist();
-    }
-  }, [token]);
-
-  // Fetch the unfiltered product list once, purely to power search suggestions
-  useEffect(() => {
-    axios
-      .get(API_URL + "/api/products")
+    axios.get(API_URL + "/api/products")
       .then(({ data }) => setAllProducts(data))
       .catch((error) => console.log(error));
   }, []);
 
-  // Close the suggestions dropdown when clicking outside the search box
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (
-        searchWrapRef.current &&
-        !searchWrapRef.current.contains(e.target)
-      ) {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target)) {
         setShowSuggestions(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const fetchWishlist = async () => {
     try {
-      const { data } = await axios.get(
-        API_URL + "/api/wishlist",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const { data } = await axios.get(API_URL + "/api/wishlist", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setWishlistIds(data.map((item) => item.product._id));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) { console.log(error); }
   };
 
   const handleToggleWishlist = async (productId) => {
-    const token = sessionStorage.getItem("token");
-
-    if (!token) {
-      toast.warning("Please login first.");
-      return;
-    }
-
+    if (!token) { toast.warning("Please login first."); return; }
     try {
       setTogglingWishlistId(productId);
-
-      const { data } = await axios.post(
-        API_URL + "/api/wishlist/toggle",
-        { productId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const { data } = await axios.post(API_URL + "/api/wishlist/toggle", { productId }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (data.wishlisted) {
         setWishlistIds((prev) => [...prev, productId]);
         toast.success("Added to Wishlist");
       } else {
-        setWishlistIds((prev) =>
-          prev.filter((id) => id !== productId)
-        );
+        setWishlistIds((prev) => prev.filter((id) => id !== productId));
         toast.success("Removed from Wishlist");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Failed to update wishlist.");
-    } finally {
-      setTogglingWishlistId(null);
+    } finally { setTogglingWishlistId(null); }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${API_URL}/api/products?keyword=${search}`);
+      setProducts(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
 
-const fetchProducts = async () => {
-  try {
-
-    setLoading(true);
-
-    const { data } = await axios.get(
-      `${API_URL}/api/products?keyword=${search}`
-    );
-
-    setProducts(data);
-
-    setLoading(false);
-
-  } catch (error) {
-
-    console.log(error);
-
-    setLoading(false);
-
-  }
-};
-
   const handleAddToCart = async (productId) => {
+    if (!token) { toast.warning("Please login first."); return; }
     try {
-      const token = sessionStorage.getItem("token");
-
-      if (!token) {
-        toast.warning("Please login first.");
-        return;
-      }
-
       setAddingToCartId(productId);
-
-      await axios.post(
-        API_URL + "/api/cart",
-        {
-          product: productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      await axios.post(API_URL + "/api/cart", { product: productId, quantity: 1 }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Product added to cart!");
     } catch (error) {
-      console.log(error);
       toast.error("Failed to add product.");
-    } finally {
-      setAddingToCartId(null);
-    }
+    } finally { setAddingToCartId(null); }
   };
 
   const productSuggestions = useMemo(() => {
     if (!search.trim()) return [];
-
     const term = search.trim().toLowerCase();
-    return allProducts
-      .filter((p) => p.name.toLowerCase().includes(term))
-      .slice(0, 6);
+    return allProducts.filter((p) => p.name.toLowerCase().includes(term)).slice(0, 6);
   }, [search, allProducts]);
 
   const handleSelectSuggestion = (product) => {
@@ -243,64 +152,26 @@ const fetchProducts = async () => {
     setCurrentPage(1);
   };
 
- // Curated homepage sections — derived from the full product list,
-// only shown when the person hasn't typed a search yet.
-const newArrivals = useMemo(
-  () =>
-    [...products]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 8),
-  [products]
-);
+  const newArrivals = useMemo(() => [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8), [products]);
+  const bestSellers = useMemo(() => products.filter((p) => p.bestseller).slice(0, 8), [products]);
+  const featuredProducts = useMemo(() => products.filter((p) => p.featured).slice(0, 8), [products]);
 
-const bestSellers = useMemo(
-  () => products.filter((p) => p.bestseller).slice(0, 8),
-  [products]
-);
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+    if (category) result = result.filter((item) => item.category === category);
+    if (sort === "low") result.sort((a, b) => a.price - b.price);
+    if (sort === "high") result.sort((a, b) => b.price - a.price);
+    return result;
+  }, [products, category, sort]);
 
-const featuredProducts = useMemo(
-  () => products.filter((p) => p.featured).slice(0, 8),
-  [products]
-);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-const filteredProducts = useMemo(() => {
-  let result = [...products];
-
-  // Category Filter
-  if (category) {
-    result = result.filter((item) => item.category === category);
-  }
-
-  // Sort by Price Low → High
-  if (sort === "low") {
-    result.sort((a, b) => a.price - b.price);
-  }
-
-  // Sort by Price High → Low
-  if (sort === "high") {
-    result.sort((a, b) => b.price - a.price);
-  }
-
-  return result;
-}, [products, category, sort]);
-
-const indexOfLastProduct =
-  currentPage * productsPerPage;
-
-const indexOfFirstProduct =
-  indexOfLastProduct - productsPerPage;
-
-const currentProducts =
-  filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-const totalPages = Math.ceil(
-  filteredProducts.length / productsPerPage
-);
   return (
     <div className="container">
+      {/* Hero Section */}
       <div className="brand-header">
         <p className="brand-eyebrow">Est. Tailored Goods</p>
         <h1>Regal Choice</h1>
@@ -309,7 +180,7 @@ const totalPages = Math.ceil(
 
         <div className="search-wrap" ref={searchWrapRef}>
           <span className="search-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
               <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -318,56 +189,30 @@ const totalPages = Math.ceil(
             type="text"
             placeholder="Search Products..."
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
+            onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
             onFocus={() => setShowSuggestions(true)}
             className="search-bar"
           />
-
           {showSuggestions && (
             <div className="search-suggestions-dropdown">
               {search.trim() ? (
                 productSuggestions.length > 0 ? (
                   productSuggestions.map((product) => (
-                    <button
-                      key={product._id}
-                      className="search-suggestion-item"
-                      onClick={() => handleSelectSuggestion(product)}
-                    >
-                      {product.image && (
-                        <img
-                          src={product.image}
-                          alt=""
-                          className="search-suggestion-image"
-                        />
-                      )}
-                      <span className="search-suggestion-name">
-                        {product.name}
-                      </span>
-                      <span className="search-suggestion-price">
-                        ₹{product.price}
-                      </span>
+                    <button key={product._id} className="search-suggestion-item" onClick={() => handleSelectSuggestion(product)}>
+                      {product.image && <img src={product.image} alt="" className="search-suggestion-image" />}
+                      <span className="search-suggestion-name">{product.name}</span>
+                      <span className="search-suggestion-price">₹{product.price}</span>
                     </button>
                   ))
                 ) : (
-                  <p className="search-suggestion-empty">
-                    No matching products
-                  </p>
+                  <p className="search-suggestion-empty">No matching products</p>
                 )
               ) : (
                 <div className="search-popular">
                   <p className="search-popular-label">Popular Searches</p>
                   <div className="search-popular-tags">
                     {POPULAR_SEARCHES.map((term) => (
-                      <button
-                        key={term}
-                        className="search-popular-tag"
-                        onClick={() => handlePopularSearchClick(term)}
-                      >
-                        {term}
-                      </button>
+                      <button key={term} className="search-popular-tag" onClick={() => handlePopularSearchClick(term)}>{term}</button>
                     ))}
                   </div>
                 </div>
@@ -377,14 +222,7 @@ const totalPages = Math.ceil(
         </div>
 
         <div className="filter-bar">
-          <select
-            className="filter-select"
-            value={category}
-            onChange={(e) => {
-              setCategory(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
+          <select className="filter-select" value={category} onChange={(e) => { setCategory(e.target.value); setCurrentPage(1); }}>
             <option value="">All Categories</option>
             <option value="T-Shirt">T-Shirt</option>
             <option value="Shirt">Shirt</option>
@@ -400,166 +238,99 @@ const totalPages = Math.ceil(
             <option value="Innerwear">Innerwear</option>
           </select>
 
-          <select
-            className="filter-select"
-            value={sort}
-            onChange={(e) => {
-              setSort(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
+          <select className="filter-select" value={sort} onChange={(e) => { setSort(e.target.value); setCurrentPage(1); }}>
             <option value="">Sort</option>
-            <option value="low">
-              Price Low → High
-            </option>
-            <option value="high">
-              Price High → Low
-            </option>
+            <option value="low">Price Low → High</option>
+            <option value="high">Price High → Low</option>
           </select>
         </div>
       </div>
 
+      {/* Trust Strip (New Addition) */}
+      <div className="trust-strip" style={{ display: 'flex', justifyContent: 'center', gap: '40px', padding: '20px 0', borderTop: '1px solid #e7e3dc', borderBottom: '1px solid #e7e3dc', marginBottom: '40px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
+          <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
+          <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
+          <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
+        </div>
+      </div>
+
       {!loading && filteredProducts.length > 0 && (
-        <p className="results-count">
-          Showing {currentProducts.length} of {filteredProducts.length} products
-        </p>
+        <p className="results-count">Showing {currentProducts.length} of {filteredProducts.length} products</p>
       )}
 
       {!search && (
         <>
-          <ProductCarousel
-            title="New Arrivals"
-            products={newArrivals}
-            loading={loading}
-          />
-
-          <ProductCarousel
-            title="Best Sellers"
-            products={bestSellers}
-            loading={loading}
-          />
-
-          <ProductCarousel
-            title="Featured"
-            products={featuredProducts}
-            loading={loading}
-          />
+          <ProductCarousel title="New Arrivals" products={newArrivals} loading={loading} />
+          <ProductCarousel title="Best Sellers" products={bestSellers} loading={loading} />
+          <ProductCarousel title="Featured" products={featuredProducts} loading={loading} />
         </>
       )}
 
+      <h2 className="section-heading" style={{ textAlign: 'center', fontFamily: 'Playfair Display', margin: '60px 0 20px' }}>All Products</h2>
+
       <div className="products">
-       {loading ? (
-  Array.from({ length: productsPerPage }).map((_, index) => (
-    <ProductSkeleton key={index} />
-  ))
-) : currentProducts.length === 0 ? (
-  <div className="state-message">
-    <h2>No products found</h2>
-    <p className="state-subtext">Try a different search or category.</p>
-  </div>
-) : (
-  currentProducts.map((product) => {
-    const stockInfo = getStockInfo(product.stock);
-    const isOutOfStock = !product.stock || product.stock <= 0;
-
-    return (
-    <div
-      className="card"
-      key={product._id}
-    >
-      <div className="card-image-wrap">
-        {product.image && (
-          <img
-            src={product.image}
-            alt={product.name}
-            className="product-image"
-            loading="lazy"
-          />
-        )}
-
-        {product.discount > 0 && (
-          <span className="sale-badge">-{product.discount}%</span>
-        )}
-
-        <button
-          className={
-            wishlistIds.includes(product._id)
-              ? "wishlist-heart-btn active"
-              : "wishlist-heart-btn"
-          }
-          disabled={togglingWishlistId === product._id}
-          onClick={() => handleToggleWishlist(product._id)}
-          aria-label="Toggle Wishlist"
-        >
-          {wishlistIds.includes(product._id) ? "♥" : "♡"}
-        </button>
-      </div>
-
-      <div className="card-body">
-        <Link
-          to={`/product/${product._id}`}
-          className="card-title-link"
-        >
-          <h3>{product.name}</h3>
-        </Link>
-
-        <p className="card-category">{product.category}</p>
-
-        <span className={`stock-badge-pill ${stockInfo.className}`}>
-          {stockInfo.label}
-        </span>
-
-        <p className="card-description">{product.description}</p>
-
-        <div className="card-footer">
-          <div className="card-price-row">
-            <p className="card-price">₹{product.price}</p>
-            {product.originalPrice > product.price && (
-              <p className="card-price-original">₹{product.originalPrice}</p>
-            )}
+        {loading ? (
+          Array.from({ length: productsPerPage }).map((_, index) => <ProductSkeleton key={index} />)
+        ) : currentProducts.length === 0 ? (
+          <div className="state-message">
+            <h2>No products found</h2>
+            <p className="state-subtext">Try a different search or category.</p>
           </div>
-
-          <button
-            className="add-to-cart-btn"
-            disabled={addingToCartId === product._id || isOutOfStock}
-            onClick={() =>
-              handleAddToCart(product._id)
-            }
-          >
-            {isOutOfStock
-              ? "Out of Stock"
-              : addingToCartId === product._id
-              ? "Adding..."
-              : "Add To Cart"}
-          </button>
-        </div>
-      </div>
-    </div>
-    );
-  })
-)}
+        ) : (
+          currentProducts.map((product) => {
+            const stockInfo = getStockInfo(product.stock);
+            const isOutOfStock = !product.stock || product.stock <= 0;
+            return (
+              <div className="card" key={product._id}>
+                <div className="card-image-wrap">
+                  {product.image && <img src={product.image} alt={product.name} className="product-image" loading="lazy" />}
+                  {product.discount > 0 && <span className="sale-badge">-{product.discount}%</span>}
+                  <button
+                    className={wishlistIds.includes(product._id) ? "wishlist-heart-btn active" : "wishlist-heart-btn"}
+                    disabled={togglingWishlistId === product._id}
+                    onClick={() => handleToggleWishlist(product._id)}
+                  >
+                    {wishlistIds.includes(product._id) ? "♥" : "♡"}
+                  </button>
+                </div>
+                <div className="card-body">
+                  <Link to={`/product/${product._id}`} className="card-title-link">
+                    <h3>{product.name}</h3>
+                  </Link>
+                  <p className="card-category">{product.category}</p>
+                  <span className={`stock-badge-pill ${stockInfo.className}`}>{stockInfo.label}</span>
+                  <p className="card-description">{product.description}</p>
+                  <div className="card-footer">
+                    <div className="card-price-row">
+                      <p className="card-price">₹{product.price}</p>
+                      {product.originalPrice > product.price && <p className="card-price-original">₹{product.originalPrice}</p>}
+                    </div>
+                    <button className="add-to-cart-btn" disabled={addingToCartId === product._id || isOutOfStock} onClick={() => handleAddToCart(product._id)}>
+                      {isOutOfStock ? "Out of Stock" : addingToCartId === product._id ? "Adding..." : "Add To Cart"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
 
       {totalPages > 1 && (
         <div className="pagination">
-          {Array.from(
-            { length: totalPages },
-            (_, index) => (
-              <button
-                key={index}
-                onClick={() =>
-                  setCurrentPage(index + 1)
-                }
-                className={
-                  currentPage === index + 1
-                    ? "page-btn page-btn-active"
-                    : "page-btn"
-                }
-              >
-                {index + 1}
-              </button>
-            )
-          )}
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button key={index} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? "page-btn page-btn-active" : "page-btn"}>
+              {index + 1}
+            </button>
+          ))}
         </div>
       )}
     </div>
@@ -569,96 +340,30 @@ const totalPages = Math.ceil(
 function App() {
   return (
     <>
-      {/* Navbar now lives here, above all Routes, so it shows on every page
-          (Cart, Checkout, Profile, Orders, Login, etc.) instead of only on Home */}
       <Navbar />
-
       <Routes>
-        <Route
-          path="/"
-          element={<Home />}
-        />
-        <Route
-          path="/cart"
-          element={<Cart />}
-        />
-        <Route
-          path="/wishlist"
-          element={<Wishlist />}
-        />
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
-        <Route
-          path="/checkout"
-          element={<Checkout />}
-        />
-        <Route
-          path="/orders"
-          element={<Orders />}
-        />
-        <Route
-          path="/orders/:id"
-          element={<OrderDetails />}
-        />
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
-        <Route
-          path="/login-otp"
-          element={<LoginWithOTP />}
-        />
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-        <Route
-          path="/admin"
-          element={<AdminLayout />}
-        >
-          <Route
-            index
-            element={<AdminDashboard />}
-          />
-          <Route
-            path="products"
-            element={<AdminProducts />}
-          />
-          <Route
-            path="orders"
-            element={<AdminOrders />}
-          />
-          <Route
-            path="orders/:id"
-            element={<AdminOrderDetails />}
-          />
-          <Route
-            path="reviews"
-            element={<AdminReviews />}
-          />
-          <Route
-            path="coupons"
-            element={<AdminCoupons />}
-          />
-          <Route
-            path="users"
-            element={<AdminUsers />}
-          />
-          <Route
-            path="profile"
-            element={<AdminProfile />}
-          />
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login-otp" element={<LoginWithOTP />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/:id" element={<AdminOrderDetails />} />
+          <Route path="reviews" element={<AdminReviews />} />
+          <Route path="coupons" element={<AdminCoupons />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="profile" element={<AdminProfile />} />
         </Route>
-        <Route
-          path="/product/:id"
-          element={<ProductDetails />}
-        />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
     </>
   );
