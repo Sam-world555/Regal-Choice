@@ -9,8 +9,6 @@
   --gold: #c9a961;
   --line: #e7e3dc;
   --muted: #6b6560;
-  --shadow-soft: 0 10px 30px rgba(20, 20, 20, 0.05);
-  --shadow-lift: 0 20px 40px rgba(20, 20, 20, 0.12);
 }
 
 * { box-sizing: border-box; }
@@ -20,6 +18,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 /* ---------- Navbar ---------- */
@@ -32,7 +31,6 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .navbar-logo-link { text-decoration: none; }
@@ -42,7 +40,6 @@ body {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 600;
   font-size: 24px;
-  letter-spacing: 0.05em;
   color: var(--paper);
 }
 
@@ -103,7 +100,6 @@ body {
   margin-left: 6px;
 }
 
-/* Hamburger Mobile Toggle */
 .navbar-toggle {
   display: none;
   flex-direction: column;
@@ -119,7 +115,7 @@ body {
   transition: 0.3s;
 }
 
-/* ---------- Hero Section (With Gradient) ---------- */
+/* ---------- Hero Section ---------- */
 .container {
   width: 100%;
   max-width: 100%;
@@ -130,7 +126,6 @@ body {
 .brand-header {
   text-align: center;
   padding: 100px 20px 80px;
-  /* Black se dark grey gradient */
   background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
   color: var(--paper);
   width: 100%;
@@ -151,7 +146,6 @@ body {
   font-size: clamp(40px, 6vw, 80px);
   font-weight: 700;
   margin: 0;
-  letter-spacing: 0.02em;
 }
 
 .brand-header h2 {
@@ -169,7 +163,6 @@ body {
   margin: 20px auto;
 }
 
-/* Search Bar inside Hero */
 .search-wrap {
   position: relative;
   max-width: 500px;
@@ -191,17 +184,13 @@ body {
   border: none;
   font-size: 15px;
   outline: none;
-  font-family: inherit;
 }
 
-/* Filters */
 .filter-bar {
   display: flex;
   justify-content: center;
   gap: 16px;
   margin-top: 30px;
-  position: relative;
-  z-index: 10;
 }
 
 .filter-select {
@@ -215,14 +204,14 @@ body {
 }
 .filter-select option { color: var(--ink); }
 
-/* ---------- Inner Page Container (Products ke liye) ---------- */
+/* ---------- Inner Page Container ---------- */
 .products-container, .trust-strip-wrapper, .section-heading-wrapper {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px;
 }
 
-/* ---------- Trust Strip ---------- */
+/* ---------- Trust Strip (ANIMATION) ---------- */
 .trust-strip {
   display: flex;
   justify-content: center;
@@ -232,13 +221,32 @@ body {
   margin-bottom: 40px;
 }
 
+.trust-item {
+  text-align: center;
+  /* Animation setup */
+  opacity: 0;
+  transform: translateX(-50px); /* Left se start hoga */
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+/* Har item thoda delay se aayega */
+.trust-item:nth-child(1) { animation-delay: 0.2s; }
+.trust-item:nth-child(2) { animation-delay: 0.4s; }
+.trust-item:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0); /* Apni jagah par aayega */
+  }
+}
+
 /* ---------- Product Grid ---------- */
 .results-count {
   text-align: center;
   font-size: 13px;
   color: var(--muted);
   margin-bottom: 24px;
-  letter-spacing: 0.05em;
 }
 
 .products {
@@ -248,7 +256,6 @@ body {
   margin-top: 40px;
 }
 
-/* Premium Card */
 .card {
   background: transparent;
   border: none;
@@ -283,7 +290,6 @@ body {
   color: var(--paper);
   padding: 4px 10px;
   font-size: 10px;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -297,12 +303,7 @@ body {
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
   color: var(--ink);
-  transition: background 0.3s;
 }
 .wishlist-heart-btn.active { color: var(--wine); background: #fff; }
 
@@ -318,10 +319,9 @@ body {
   font-size: 20px;
   font-weight: 600;
   margin: 0 0 6px;
-  color: var(--ink);
 }
 
-.card-title-link { text-decoration: none; }
+.card-title-link { text-decoration: none; color: inherit; }
 
 .card-category {
   font-size: 11px;
@@ -331,13 +331,7 @@ body {
   margin-bottom: 12px;
 }
 
-.stock-badge-pill {
-  display: inline-block;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+.stock-badge-pill { font-size: 10px; text-transform: uppercase; margin-bottom: 8px; display: inline-block; }
 .stock-badge-in { color: #2b8a3e; }
 .stock-badge-low { color: #d97706; }
 .stock-badge-out { color: #dc2626; }
@@ -362,17 +356,8 @@ body {
   padding-top: 16px;
 }
 
-.card-price {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-}
-.card-price-original {
-  font-size: 13px;
-  color: var(--muted);
-  text-decoration: line-through;
-  margin-left: 8px;
-}
+.card-price { font-size: 18px; font-weight: 600; margin: 0; }
+.card-price-original { font-size: 13px; color: var(--muted); text-decoration: line-through; margin-left: 8px; }
 
 .add-to-cart-btn {
   background: transparent;
@@ -381,56 +366,32 @@ body {
   padding: 10px 20px;
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.add-to-cart-btn:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
+.add-to-cart-btn:hover { background: var(--ink); color: var(--paper); }
+.add-to-cart-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.add-to-cart-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ---------- Pagination ---------- */
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 60px;
-}
-
+/* Pagination */
+.pagination { display: flex; justify-content: center; gap: 12px; margin-top: 60px; }
 .page-btn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--ink);
-  cursor: pointer;
-  font-size: 14px;
+  width: 40px; height: 40px; border: 1px solid var(--line); background: transparent; cursor: pointer;
 }
+.page-btn-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-.page-btn-active {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
 
 /* =========================================
-   MOBILE RESPONSIVE FIXES
+   MOBILE RESPONSIVE (PHONE KE LIYE)
 ========================================= */
 @media (max-width: 768px) {
   .navbar { padding: 16px 20px; }
   
-  .navbar-toggle { display: flex; } /* Hamburger visible on mobile */
+  .navbar-toggle { display: flex; }
   
   .navbar-links {
-    display: none; /* Mobile pe links chhupayenge */
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -439,25 +400,31 @@ body {
     flex-direction: column;
     padding: 20px;
     gap: 16px;
-    border-top: 1px solid rgba(255,255,255,0.1);
   }
   
-  /* Jab menu open ho */
-  .navbar-links.open {
-    display: flex; 
-  }
+  .navbar-links.open { display: flex; }
 
   .brand-header { padding: 60px 16px 40px; }
-  .brand-header h1 { font-size: 36px; }
+  .brand-header h1 { font-size: 38px; }
+  .brand-header h2 { font-size: 12px; }
   
-  .products-container, .trust-strip-wrapper, .section-heading-wrapper {
-    padding: 0 16px;
-  }
+  .filter-bar { flex-direction: column; align-items: stretch; padding: 0 20px; }
 
+  /* Trust Strip Mobile pe chota aur upar niche */
+  .trust-strip-wrapper { padding: 0 16px; }
+  .trust-strip {
+    flex-direction: column; /* Vertical ho jayega */
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .products-container, .section-heading-wrapper { padding: 0 16px; }
+  
+  /* Product grid 2 columns */
   .products { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   
-  .trust-strip { flex-direction: column; gap: 16px; text-align: center; }
-  
-  .card-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .add-to-cart-btn { width: 100%; }
+  .card-body { padding: 12px 0; }
+  .card-body h3 { font-size: 15px; }
+  .card-price { font-size: 15px; }
+  .add-to-cart-btn { padding: 8px 10px; font-size: 10px; }
 }

@@ -247,18 +247,18 @@ function Home() {
         </div>
       </div>
 
-      {/* 2. Trust Strip Wrapper (Taaki screen se na chipke) */}
+      {/* 2. Trust Strip Wrapper (Animation ke liye trust-item class add ki hai) */}
       <div className="trust-strip-wrapper">
         <div className="trust-strip">
-          <div style={{ textAlign: 'center' }}>
+          <div className="trust-item">
             <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
             <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div className="trust-item">
             <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
             <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
           </div>
-          <div style={{ textAlign: 'center' }}>
+          <div className="trust-item">
             <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
             <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
           </div>
