@@ -147,8 +147,6 @@ function AdminProducts() {
     formData.append("featured", featured);
     formData.append("bestseller", bestseller);
 
-    // Images are appended in the order shown in the preview row —
-    // the first one becomes the main product image on the backend.
     images.forEach((img) => {
       formData.append("images", img);
     });
@@ -156,9 +154,6 @@ function AdminProducts() {
     try {
       setSubmitting(true);
 
-      // NOTE: Content-Type is NOT set manually for FormData.
-      // The browser sets "multipart/form-data" together with the
-      // required boundary automatically. Setting it by hand can break uploads.
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -172,18 +167,15 @@ function AdminProducts() {
           formData,
           config
         );
-
         toast.success("Product Updated Successfully!");
       } else {
         await axios.post(API_URL + "/api/products", formData, config);
-
         toast.success("Product Added Successfully!");
       }
 
       resetForm();
       fetchProducts();
     } catch (error) {
-      // Detailed logs so the real reason shows up in the browser console (F12)
       console.log("ADD/UPDATE PRODUCT ERROR:", error);
       console.log("STATUS:", error.response?.status);
       console.log("DATA:", error.response?.data);
@@ -213,7 +205,6 @@ function AdminProducts() {
   const handleDelete = async (id) => {
     try {
       setDeleting(true);
-
       const token = sessionStorage.getItem("token");
 
       await axios.delete(`${API_URL}/api/products/${id}`, {
@@ -243,8 +234,6 @@ function AdminProducts() {
     setSku(product.sku || "");
     setFeatured(product.featured || false);
     setBestseller(product.bestseller || false);
-
-    // Agar images edit ke time change nahi karni hain
     setImages([]);
 
     window.scrollTo({ top: 0, behavior: "smooth" });
