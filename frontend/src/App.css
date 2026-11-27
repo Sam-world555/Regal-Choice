@@ -103,20 +103,38 @@ body {
   margin-left: 6px;
 }
 
-/* ---------- Hero Section ---------- */
+/* Hamburger Mobile Toggle */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.navbar-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--paper);
+  transition: 0.3s;
+}
+
+/* ---------- Hero Section (With Gradient) ---------- */
 .container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 40px 80px;
+  padding: 0; 
 }
 
 .brand-header {
   text-align: center;
-  padding: 80px 16px 60px;
-  background: var(--ink);
+  padding: 100px 20px 80px;
+  /* Black se dark grey gradient */
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
   color: var(--paper);
-  margin: 0 -40px 60px -40px; /* Full width bleed */
+  width: 100%;
+  margin: 0;
   border-bottom: 4px solid var(--gold);
 }
 
@@ -196,6 +214,23 @@ body {
   cursor: pointer;
 }
 .filter-select option { color: var(--ink); }
+
+/* ---------- Inner Page Container (Products ke liye) ---------- */
+.products-container, .trust-strip-wrapper, .section-heading-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ---------- Trust Strip ---------- */
+.trust-strip {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 40px;
+}
 
 /* ---------- Product Grid ---------- */
 .results-count {
@@ -386,13 +421,43 @@ body {
   border-color: var(--ink);
 }
 
-/* ---------- Responsive ---------- */
+/* =========================================
+   MOBILE RESPONSIVE FIXES
+========================================= */
 @media (max-width: 768px) {
-  .container { padding: 0 16px 60px; }
-  .brand-header { margin: 0 -16px 40px -16px; padding: 50px 16px 40px; }
-  .navbar { padding: 16px; }
-  .navbar-links { display: none; } /* Mobile menu handles it via JS */
+  .navbar { padding: 16px 20px; }
+  
+  .navbar-toggle { display: flex; } /* Hamburger visible on mobile */
+  
+  .navbar-links {
+    display: none; /* Mobile pe links chhupayenge */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--ink);
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* Jab menu open ho */
+  .navbar-links.open {
+    display: flex; 
+  }
+
+  .brand-header { padding: 60px 16px 40px; }
+  .brand-header h1 { font-size: 36px; }
+  
+  .products-container, .trust-strip-wrapper, .section-heading-wrapper {
+    padding: 0 16px;
+  }
+
   .products { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  
+  .trust-strip { flex-direction: column; gap: 16px; text-align: center; }
+  
   .card-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
   .add-to-cart-btn { width: 100%; }
 }

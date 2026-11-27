@@ -171,7 +171,8 @@ function Home() {
 
   return (
     <div className="container">
-      {/* Hero Section */}
+      
+      {/* 1. Hero Section (Full Width Black Gradient) */}
       <div className="brand-header">
         <p className="brand-eyebrow">Est. Tailored Goods</p>
         <h1>Regal Choice</h1>
@@ -246,93 +247,101 @@ function Home() {
         </div>
       </div>
 
-      {/* Trust Strip (New Addition) */}
-      <div className="trust-strip" style={{ display: 'flex', justifyContent: 'center', gap: '40px', padding: '20px 0', borderTop: '1px solid #e7e3dc', borderBottom: '1px solid #e7e3dc', marginBottom: '40px' }}>
-        <div style={{ textAlign: 'center' }}>
-          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
-          <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
-          <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
-          <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
+      {/* 2. Trust Strip Wrapper (Taaki screen se na chipke) */}
+      <div className="trust-strip-wrapper">
+        <div className="trust-strip">
+          <div style={{ textAlign: 'center' }}>
+            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
+            <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
+            <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
+            <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
+          </div>
         </div>
       </div>
 
-      {!loading && filteredProducts.length > 0 && (
-        <p className="results-count">Showing {currentProducts.length} of {filteredProducts.length} products</p>
-      )}
+      {/* 3. Products Wrapper */}
+      <div className="products-container">
+        
+        {!loading && filteredProducts.length > 0 && (
+          <p className="results-count">Showing {currentProducts.length} of {filteredProducts.length} products</p>
+        )}
 
-      {!search && (
-        <>
-          <ProductCarousel title="New Arrivals" products={newArrivals} loading={loading} />
-          <ProductCarousel title="Best Sellers" products={bestSellers} loading={loading} />
-          <ProductCarousel title="Featured" products={featuredProducts} loading={loading} />
-        </>
-      )}
+        {!search && (
+          <>
+            <ProductCarousel title="New Arrivals" products={newArrivals} loading={loading} />
+            <ProductCarousel title="Best Sellers" products={bestSellers} loading={loading} />
+            <ProductCarousel title="Featured" products={featuredProducts} loading={loading} />
+          </>
+        )}
 
-      <h2 className="section-heading" style={{ textAlign: 'center', fontFamily: 'Playfair Display', margin: '60px 0 20px' }}>All Products</h2>
+        <div className="section-heading-wrapper">
+          <h2 className="section-heading" style={{ textAlign: 'center', fontFamily: 'Playfair Display', margin: '60px 0 20px' }}>All Products</h2>
+        </div>
 
-      <div className="products">
-        {loading ? (
-          Array.from({ length: productsPerPage }).map((_, index) => <ProductSkeleton key={index} />)
-        ) : currentProducts.length === 0 ? (
-          <div className="state-message">
-            <h2>No products found</h2>
-            <p className="state-subtext">Try a different search or category.</p>
-          </div>
-        ) : (
-          currentProducts.map((product) => {
-            const stockInfo = getStockInfo(product.stock);
-            const isOutOfStock = !product.stock || product.stock <= 0;
-            return (
-              <div className="card" key={product._id}>
-                <div className="card-image-wrap">
-                  {product.image && <img src={product.image} alt={product.name} className="product-image" loading="lazy" />}
-                  {product.discount > 0 && <span className="sale-badge">-{product.discount}%</span>}
-                  <button
-                    className={wishlistIds.includes(product._id) ? "wishlist-heart-btn active" : "wishlist-heart-btn"}
-                    disabled={togglingWishlistId === product._id}
-                    onClick={() => handleToggleWishlist(product._id)}
-                  >
-                    {wishlistIds.includes(product._id) ? "♥" : "♡"}
-                  </button>
-                </div>
-                <div className="card-body">
-                  <Link to={`/product/${product._id}`} className="card-title-link">
-                    <h3>{product.name}</h3>
-                  </Link>
-                  <p className="card-category">{product.category}</p>
-                  <span className={`stock-badge-pill ${stockInfo.className}`}>{stockInfo.label}</span>
-                  <p className="card-description">{product.description}</p>
-                  <div className="card-footer">
-                    <div className="card-price-row">
-                      <p className="card-price">₹{product.price}</p>
-                      {product.originalPrice > product.price && <p className="card-price-original">₹{product.originalPrice}</p>}
-                    </div>
-                    <button className="add-to-cart-btn" disabled={addingToCartId === product._id || isOutOfStock} onClick={() => handleAddToCart(product._id)}>
-                      {isOutOfStock ? "Out of Stock" : addingToCartId === product._id ? "Adding..." : "Add To Cart"}
+        <div className="products">
+          {loading ? (
+            Array.from({ length: productsPerPage }).map((_, index) => <ProductSkeleton key={index} />)
+          ) : currentProducts.length === 0 ? (
+            <div className="state-message">
+              <h2>No products found</h2>
+              <p className="state-subtext">Try a different search or category.</p>
+            </div>
+          ) : (
+            currentProducts.map((product) => {
+              const stockInfo = getStockInfo(product.stock);
+              const isOutOfStock = !product.stock || product.stock <= 0;
+              return (
+                <div className="card" key={product._id}>
+                  <div className="card-image-wrap">
+                    {product.image && <img src={product.image} alt={product.name} className="product-image" loading="lazy" />}
+                    {product.discount > 0 && <span className="sale-badge">-{product.discount}%</span>}
+                    <button
+                      className={wishlistIds.includes(product._id) ? "wishlist-heart-btn active" : "wishlist-heart-btn"}
+                      disabled={togglingWishlistId === product._id}
+                      onClick={() => handleToggleWishlist(product._id)}
+                    >
+                      {wishlistIds.includes(product._id) ? "♥" : "♡"}
                     </button>
                   </div>
+                  <div className="card-body">
+                    <Link to={`/product/${product._id}`} className="card-title-link">
+                      <h3>{product.name}</h3>
+                    </Link>
+                    <p className="card-category">{product.category}</p>
+                    <span className={`stock-badge-pill ${stockInfo.className}`}>{stockInfo.label}</span>
+                    <p className="card-description">{product.description}</p>
+                    <div className="card-footer">
+                      <div className="card-price-row">
+                        <p className="card-price">₹{product.price}</p>
+                        {product.originalPrice > product.price && <p className="card-price-original">₹{product.originalPrice}</p>}
+                      </div>
+                      <button className="add-to-cart-btn" disabled={addingToCartId === product._id || isOutOfStock} onClick={() => handleAddToCart(product._id)}>
+                        {isOutOfStock ? "Out of Stock" : addingToCartId === product._id ? "Adding..." : "Add To Cart"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })
+          )}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="pagination">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button key={index} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? "page-btn page-btn-active" : "page-btn"}>
+                {index + 1}
+              </button>
+            ))}
+          </div>
         )}
       </div>
-
-      {totalPages > 1 && (
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button key={index} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? "page-btn page-btn-active" : "page-btn"}>
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
