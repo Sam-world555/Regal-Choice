@@ -16,18 +16,10 @@ function AdminOrderDetails() {
   const fetchOrder = async () => {
     try {
       setLoading(true);
-
       const token = sessionStorage.getItem("token");
-
-      const { data } = await axios.get(
-        `${API_URL}/api/orders/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const { data } = await axios.get(`${API_URL}/api/orders/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setOrder(data);
     } catch (error) {
       console.log(error);
@@ -44,19 +36,12 @@ function AdminOrderDetails() {
   const handleStatusChange = async (status) => {
     try {
       setUpdating(true);
-
       const token = sessionStorage.getItem("token");
-
       await axios.put(
         `${API_URL}/api/orders/${id}/status`,
         { status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       toast.success("Order Status Updated!");
       await fetchOrder();
     } catch (error) {
@@ -69,16 +54,11 @@ function AdminOrderDetails() {
 
   const getStatusClass = (status) => {
     switch (status) {
-      case "Delivered":
-        return "status-pill status-delivered";
-      case "Shipped":
-        return "status-pill status-shipped";
-      case "Processing":
-        return "status-pill status-processing";
-      case "Cancelled":
-        return "status-pill status-cancelled";
-      default:
-        return "status-pill status-pending";
+      case "Delivered": return "status-pill status-delivered";
+      case "Shipped": return "status-pill status-shipped";
+      case "Processing": return "status-pill status-processing";
+      case "Cancelled": return "status-pill status-cancelled";
+      default: return "status-pill status-pending";
     }
   };
 
@@ -90,10 +70,7 @@ function AdminOrderDetails() {
     return (
       <>
         <p className="empty-note">Order not found.</p>
-        <button
-          className="order-back-link"
-          onClick={() => navigate("/admin/orders")}
-        >
+        <button className="order-back-link" onClick={() => navigate("/admin/orders")}>
           ← Back to All Orders
         </button>
       </>
@@ -102,20 +79,14 @@ function AdminOrderDetails() {
 
   return (
     <>
-      <button
-        className="order-back-link"
-        onClick={() => navigate("/admin/orders")}
-      >
+      <button className="order-back-link" onClick={() => navigate("/admin/orders")}>
         ← Back to All Orders
       </button>
 
       <div className="admin-order-card">
         <div className="admin-order-header">
           <h2>📦 Order #{order._id.slice(-6)}</h2>
-
-          <span className={getStatusClass(order.status)}>
-            {order.status}
-          </span>
+          <span className={getStatusClass(order.status)}>{order.status}</span>
         </div>
 
         <div className="admin-order-controls">
@@ -133,9 +104,7 @@ function AdminOrderDetails() {
               <option value="Delivered">Delivered</option>
               <option value="Cancelled">Cancelled</option>
             </select>
-            {updating && (
-              <span className="status-updating-text">Updating...</span>
-            )}
+            {updating && <span className="status-updating-text">Updating...</span>}
           </label>
         </div>
 
@@ -148,35 +117,19 @@ function AdminOrderDetails() {
         <h3 className="admin-subheading">👤 Customer Details</h3>
 
         <div className="admin-address-grid">
-          <p>
-            <strong>Name:</strong> {order.shippingAddress?.fullName}
-          </p>
-
-          <p>
-            <strong>Mobile:</strong> {order.shippingAddress?.mobile}
-          </p>
-
-          <p>
-            <strong>Address:</strong> {order.shippingAddress?.address}
-          </p>
-
-          <p>
-            <strong>City:</strong> {order.shippingAddress?.city}
-          </p>
-
-          <p>
-            <strong>State:</strong> {order.shippingAddress?.state}
-          </p>
-
-          <p>
-            <strong>Pincode:</strong> {order.shippingAddress?.pincode}
-          </p>
+          <p><strong>Name:</strong> {order.shippingAddress?.fullName}</p>
+          <p><strong>Mobile:</strong> {order.shippingAddress?.mobile}</p>
+          <p><strong>Address:</strong> {order.shippingAddress?.address}</p>
+          <p><strong>City:</strong> {order.shippingAddress?.city}</p>
+          <p><strong>State:</strong> {order.shippingAddress?.state}</p>
+          <p><strong>Pincode:</strong> {order.shippingAddress?.pincode}</p>
         </div>
 
         <hr className="admin-divider" />
 
         <h3 className="admin-subheading">🛍 Products</h3>
 
+        {/* Products List Fixed Layout */}
         <div className="admin-order-items">
           {order.items.map((item) => (
             <div key={item._id} className="admin-order-item">
@@ -190,13 +143,13 @@ function AdminOrderDetails() {
                 className="admin-order-item-image"
               />
 
-              <div>
+              <div className="admin-order-item-info">
                 <h4>{item.product?.name}</h4>
+                <p>₹{Number(item.product?.price || 0).toLocaleString()} × {item.quantity}</p>
+              </div>
 
-                <p>
-                  ₹{Number(item.product?.price || 0).toLocaleString()} ×{" "}
-                  {item.quantity}
-                </p>
+              <div className="admin-order-item-total">
+                <p>₹{(Number(item.product?.price || 0) * item.quantity).toLocaleString()}</p>
               </div>
             </div>
           ))}
