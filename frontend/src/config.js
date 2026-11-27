@@ -1,4 +1,6 @@
 // Central place for the backend API base URL.
+export const API_URL = "https://regal-choice.onrender.com";
+// Central place for the backend API base URL.
 // Locally, Vite reads this from frontend/.env (VITE_API_URL).
 // In production (Vercel), set VITE_API_URL in the project's Environment Variables
 // to your live backend URL (e.g. https://regalchoice-api.onrender.com).
