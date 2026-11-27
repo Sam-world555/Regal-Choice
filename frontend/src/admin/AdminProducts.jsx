@@ -1,6 +1,5 @@
 import { API_URL } from "../config";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "../Admin.css";
 import "../Profile.css";
@@ -8,10 +7,6 @@ import { toast } from "react-toastify";
 
 function AdminProfile() {
   const token = sessionStorage.getItem("token");
-  const [searchParams] = useSearchParams();
-  const initialTab = searchParams.get("tab") || "account";
-  const [activeTab, setActiveTab] = useState(initialTab);
-
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,9 +15,6 @@ function AdminProfile() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
 
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [savingNotifications, setSavingNotifications] = useState(false);
-
   const fetchProfile = async () => {
     try {
       setLoading(true);
@@ -30,7 +22,6 @@ function AdminProfile() {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(data);
-      setEmailNotifications(data.emailNotifications !== false);
     } catch (error) {
       console.log(error);
       toast.error("Failed to load profile.");
@@ -65,29 +56,9 @@ function AdminProfile() {
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      console.log(error);
       toast.error(error.response?.data?.message || "Failed to change password.");
     } finally {
       setChangingPassword(false);
-    }
-  };
-
-  const handleToggleNotifications = async () => {
-    const newValue = !emailNotifications;
-    try {
-      setSavingNotifications(true);
-      await axios.put(
-        API_URL + "/api/users/notifications",
-        { emailNotifications: newValue },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setEmailNotifications(newValue);
-      toast.success(newValue ? "Email notifications turned on" : "Email notifications turned off");
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to update notification settings.");
-    } finally {
-      setSavingNotifications(false);
     }
   };
 
@@ -101,7 +72,8 @@ function AdminProfile() {
   }
 
   return (
-    <div className="admin-profile-container">
+    <div className="admin-profile-page">
+      {/* Profile Header Card */}
       <div className="admin-profile-hero">
         <div className="admin-profile-avatar">
           {user.name?.charAt(0).toUpperCase()}
@@ -117,73 +89,36 @@ function AdminProfile() {
         Admin ID: {user._id} 📋
       </button>
 
-      <div className="profile-tabs">
-        <button
-          className={activeTab === "account" ? "profile-tab profile-tab-active" : "profile-tab"}
-          onClick={() => setActiveTab("account")}
-        >
-          Account
-        </button>
-        <button
-          className={activeTab === "notifications" ? "profile-tab profile-tab-active" : "profile-tab"}
-          onClick={() => setActiveTab("notifications")}
-        >
-          Notifications
-        </button>
+      {/* Password Change Panel */}
+      <div className="admin-panel" style={{ maxWidth: '600px' }}>
+        <h2 className="panel-title">Change Password</h2>
+        <form onSubmit={handleChangePassword} className="profile-form">
+          <input
+            type="password"
+            placeholder="Current Password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            className="profile-input"
+          />
+          <input
+            type="password"
+            placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="profile-input"
+          />
+          <input
+            type="password"
+            placeholder="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="profile-input"
+          />
+          <button type="submit" className="profile-save-btn" disabled={changingPassword}>
+            {changingPassword ? "Changing..." : "Change Password"}
+          </button>
+        </form>
       </div>
-
-      {activeTab === "account" && (
-        <div className="admin-panel">
-          <h2 className="panel-title">Change Password</h2>
-          <form onSubmit={handleChangePassword} className="profile-form">
-            <input
-              type="password"
-              placeholder="Current Password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="profile-input"
-            />
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="profile-input"
-            />
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="profile-input"
-            />
-            <button type="submit" className="profile-save-btn" disabled={changingPassword}>
-              {changingPassword ? "Changing..." : "Change Password"}
-            </button>
-          </form>
-        </div>
-      )}
-
-      {activeTab === "notifications" && (
-        <div className="admin-panel">
-          <h2 className="panel-title">Notification Preferences</h2>
-          <div className="settings-toggle-row">
-            <div>
-              <p className="settings-toggle-label">New Order Alerts</p>
-              <p className="settings-toggle-desc">
-                Get an email whenever a new order comes in.
-              </p>
-            </div>
-            <button
-              className={emailNotifications ? "toggle-switch toggle-switch-on" : "toggle-switch"}
-              onClick={handleToggleNotifications}
-              disabled={savingNotifications}
-            >
-              <span className="toggle-switch-knob" />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
