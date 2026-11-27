@@ -211,7 +211,11 @@ body {
   padding: 0 40px;
 }
 
-/* ---------- Trust Strip (ANIMATION) ---------- */
+/* ---------- Trust Strip (Infinite Animation) ---------- */
+.trust-strip-wrapper {
+  overflow: hidden; /* Taaki animation screen se bahar na dikhe */
+}
+
 .trust-strip {
   display: flex;
   justify-content: center;
@@ -223,21 +227,27 @@ body {
 
 .trust-item {
   text-align: center;
-  /* Animation setup */
-  opacity: 0;
-  transform: translateX(-50px); /* Left se start hoga */
-  animation: slideInLeft 0.8s ease-out forwards;
+  /* Infinite Animation setup */
+  animation: slideInOut 4s infinite ease-in-out;
 }
 
-/* Har item thoda delay se aayega */
-.trust-item:nth-child(1) { animation-delay: 0.2s; }
-.trust-item:nth-child(2) { animation-delay: 0.4s; }
-.trust-item:nth-child(3) { animation-delay: 0.6s; }
+/* Har item thoda delay se aayega taaki wave effect bane */
+.trust-item:nth-child(1) { animation-delay: 0s; }
+.trust-item:nth-child(2) { animation-delay: 0.2s; }
+.trust-item:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes slideInLeft {
-  to {
+@keyframes slideInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px); /* Left se start */
+  }
+  20%, 80% {
     opacity: 1;
-    transform: translateX(0); /* Apni jagah par aayega */
+    transform: translateX(0); /* Beech mein rukega */
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100px); /* Right mein nikal jayega */
   }
 }
 
@@ -383,7 +393,7 @@ body {
 
 
 /* =========================================
-   MOBILE RESPONSIVE (PHONE KE LIYE)
+   MOBILE RESPONSIVE (PHONE KE LIYE FIX)
 ========================================= */
 @media (max-width: 768px) {
   .navbar { padding: 16px 20px; }
@@ -408,19 +418,33 @@ body {
   .brand-header h1 { font-size: 38px; }
   .brand-header h2 { font-size: 12px; }
   
-  .filter-bar { flex-direction: column; align-items: stretch; padding: 0 20px; }
-
-  /* Trust Strip Mobile pe chota aur upar niche */
-  .trust-strip-wrapper { padding: 0 16px; }
-  .trust-strip {
-    flex-direction: column; /* Vertical ho jayega */
-    gap: 20px;
-    padding: 20px 0;
+  /* Filter bar WAPAS EK LINE ME (Side by side) */
+  .filter-bar { 
+    flex-direction: row; 
+    padding: 0 10px; 
+    gap: 8px;
   }
+  
+  .filter-select {
+    flex: 1; /* Dono barabar jagah lenge */
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  /* Trust Strip WAPAS EK LINE ME (Horizontal) */
+  .trust-strip-wrapper { padding: 0 10px; }
+  .trust-strip {
+    flex-direction: row; 
+    justify-content: space-between;
+    gap: 8px;
+    padding: 15px 0;
+  }
+  
+  .trust-item strong { font-size: 11px !important; }
+  .trust-item span { font-size: 9px !important; }
   
   .products-container, .section-heading-wrapper { padding: 0 16px; }
   
-  /* Product grid 2 columns */
   .products { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   
   .card-body { padding: 12px 0; }
