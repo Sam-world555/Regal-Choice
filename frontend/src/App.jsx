@@ -247,21 +247,25 @@ function Home() {
         </div>
       </div>
 
-      {/* 2. Trust Strip Wrapper (Clean & Centered) */}
+      {/* 2. Trust Strip Wrapper (Marquee ke liye 3 sets duplicate) */}
       <div className="trust-strip-wrapper">
         <div className="trust-strip">
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
-          </div>
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
-          </div>
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
-          </div>
+          
+          {/* SET 1 */}
+          <div className="trust-item"><strong>Free Shipping</strong><span>On orders above ₹999</span></div>
+          <div className="trust-item"><strong>Easy Returns</strong><span>7 Days Return Policy</span></div>
+          <div className="trust-item"><strong>Secure Payments</strong><span>100% Safe Checkout</span></div>
+          
+          {/* SET 2 */}
+          <div className="trust-item"><strong>Free Shipping</strong><span>On orders above ₹999</span></div>
+          <div className="trust-item"><strong>Easy Returns</strong><span>7 Days Return Policy</span></div>
+          <div className="trust-item"><strong>Secure Payments</strong><span>100% Safe Checkout</span></div>
+
+          {/* SET 3 */}
+          <div className="trust-item"><strong>Free Shipping</strong><span>On orders above ₹999</span></div>
+          <div className="trust-item"><strong>Easy Returns</strong><span>7 Days Return Policy</span></div>
+          <div className="trust-item"><strong>Secure Payments</strong><span>100% Safe Checkout</span></div>
+
         </div>
       </div>
 

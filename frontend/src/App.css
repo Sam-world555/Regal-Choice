@@ -211,28 +211,32 @@ body {
   padding: 0 40px;
 }
 
-/* ---------- Trust Strip (Clean & Centered) ---------- */
+/* ---------- Trust Strip (Marquee Animation Fixed) ---------- */
 .trust-strip-wrapper {
   width: 100%;
+  overflow: hidden; 
   border-bottom: 1px solid var(--line);
   margin-bottom: 40px;
   padding: 20px 0;
+  background: var(--paper);
 }
 
 .trust-strip {
   display: flex;
-  justify-content: space-evenly; /* Items ko barabar space dega */
-  align-items: center;
-  width: 100%;
-  max-width: 1000px; /* PC par zyada failne nahi dega */
-  margin: 0 auto;
+  width: max-content;
+  animation: marquee 20s linear infinite; 
+}
+
+.trust-strip:hover {
+  animation-play-state: paused; /* Mouse le jao toh ruk jaye */
 }
 
 .trust-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+  margin-right: 100px; /* Gap between items */
   white-space: nowrap;
 }
 
@@ -246,6 +250,12 @@ body {
 .trust-item span {
   font-size: 12px; 
   color: var(--muted);
+}
+
+/* Loop Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); } /* Kyunki 3 sets hain */
 }
 
 /* ---------- Product Grid ---------- */
@@ -429,15 +439,9 @@ body {
 
   .trust-strip-wrapper { padding: 15px 0; }
   
-  .trust-strip {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 10px;
-    gap: 5px;
-  }
-  
-  .trust-item strong { font-size: 11px; }
-  .trust-item span { font-size: 9px; }
+  .trust-item { margin-right: 50px; } /* Mobile me gap thoda kam */
+  .trust-item strong { font-size: 12px; }
+  .trust-item span { font-size: 10px; }
   
   .products-container, .section-heading-wrapper { padding: 0 16px; }
   
