@@ -24,18 +24,10 @@ function OrderDetails() {
   const fetchOrder = async () => {
     try {
       setLoading(true);
-
       const token = sessionStorage.getItem("token");
-
-      const { data } = await axios.get(
-        `${API_URL}/api/orders/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const { data } = await axios.get(`${API_URL}/api/orders/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setOrder(data);
     } catch (error) {
       console.log(error);
@@ -47,16 +39,11 @@ function OrderDetails() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Delivered":
-        return "green";
-      case "Shipped":
-        return "orange";
-      case "Processing":
-        return "#007bff";
-      case "Cancelled":
-        return "red";
-      default:
-        return "#666";
+      case "Delivered": return "green";
+      case "Shipped": return "orange";
+      case "Processing": return "#007bff";
+      case "Cancelled": return "red";
+      default: return "#666";
     }
   };
 
@@ -86,21 +73,9 @@ function OrderDetails() {
 
     doc.setFontSize(11);
     doc.text(`Order ID: #${order._id.slice(-6)}`, 15, y);
-    doc.text(
-      `Date: ${new Date(order.createdAt).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })}`,
-      pageWidth - 15,
-      y,
-      { align: "right" }
-    );
+    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString("en-IN")}`, pageWidth - 15, y, { align: "right" });
     y += 6;
     doc.text(`Status: ${order.status}`, 15, y);
-    doc.text(`Payment: Razorpay (Online)`, pageWidth - 15, y, {
-      align: "right",
-    });
     y += 12;
 
     doc.setFont("helvetica", "bold");
@@ -112,19 +87,9 @@ function OrderDetails() {
     y += 5;
     doc.text(order.shippingAddress?.mobile || "", 15, y);
     y += 5;
-    doc.text(
-      doc.splitTextToSize(order.shippingAddress?.address || "", 100),
-      15,
-      y
-    );
+    doc.text(doc.splitTextToSize(order.shippingAddress?.address || "", 100), 15, y);
     y += 10;
-    doc.text(
-      `${order.shippingAddress?.city || ""}, ${
-        order.shippingAddress?.state || ""
-      } - ${order.shippingAddress?.pincode || ""}`,
-      15,
-      y
-    );
+    doc.text(`${order.shippingAddress?.city || ""}, ${order.shippingAddress?.state || ""} - ${order.shippingAddress?.pincode || ""}`, 15, y);
     y += 12;
 
     doc.setFont("helvetica", "bold");
@@ -145,13 +110,11 @@ function OrderDetails() {
       const price = item.product?.price || 0;
       const qty = item.quantity;
       const subtotal = price * qty;
-
       const nameLines = doc.splitTextToSize(name, 90);
       doc.text(nameLines, 18, y);
       doc.text(String(qty), pageWidth - 75, y);
       doc.text(`Rs. ${price}`, pageWidth - 50, y);
       doc.text(`Rs. ${subtotal}`, pageWidth - 18, y, { align: "right" });
-
       y += Math.max(nameLines.length * 5, 7);
     });
 
@@ -163,49 +126,26 @@ function OrderDetails() {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(122, 31, 61);
-    doc.text(`Total: Rs. ${order.totalPrice}`, pageWidth - 15, y, {
-      align: "right",
-    });
+    doc.text(`Total: Rs. ${order.totalPrice}`, pageWidth - 15, y, { align: "right" });
 
     y += 20;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
     doc.setTextColor(150, 150, 150);
-    doc.text(
-      "Thank you for shopping with Regal Choice!",
-      pageWidth / 2,
-      y,
-      { align: "center" }
-    );
+    doc.text("Thank you for shopping with Regal Choice!", pageWidth / 2, y, { align: "center" });
 
     doc.save(`Invoice_${order._id.slice(-6)}.pdf`);
   };
 
   if (loading) {
-    return (
-      <div className="container orders-page">
-        <div className="skeleton-order-card">
-          <div className="skeleton-order-header">
-            <div className="skeleton-line skeleton-line-order-title" />
-            <div className="skeleton-line skeleton-line-order-status" />
-          </div>
-          <div className="skeleton-line skeleton-line-text" />
-          <div
-            className="skeleton-line skeleton-line-text"
-            style={{ width: "60%" }}
-          />
-        </div>
-      </div>
-    );
+    return <div className="page-container"><p className="empty-note">Loading order details...</p></div>;
   }
 
   if (!order) {
     return (
-      <div className="container orders-page">
+      <div className="page-container">
         <p className="empty-note">Order not found.</p>
-        <Link to="/orders" className="order-back-link">
-          ← Back to My Orders
-        </Link>
+        <Link to="/orders" className="order-back-link">← Back to My Orders</Link>
       </div>
     );
   }
@@ -213,139 +153,68 @@ function OrderDetails() {
   const currentStepIndex = TRACKING_STEPS.indexOf(order.status);
 
   return (
-    <div className="container orders-page">
+    <div className="page-container">
       <button className="order-back-link" onClick={() => navigate("/orders")}>
         ← Back to My Orders
       </button>
 
-      <div className="order-card">
-        <div className="order-card-header">
+      <div className="customer-order-card">
+        <div className="customer-order-header">
           <h2>Order #{order._id.slice(-6)}</h2>
-
-          <div className="order-card-header-right">
-            <span
-              className="status-pill"
-              style={{
-                color: getStatusColor(order.status),
-                borderColor: getStatusColor(order.status),
-              }}
-            >
+          <div className="customer-order-header-right">
+            <span className="status-pill" style={{ color: getStatusColor(order.status), borderColor: getStatusColor(order.status) }}>
               {order.status}
             </span>
-
-            <button
-              className="invoice-download-btn"
-              onClick={handleDownloadInvoice}
-            >
-              ⬇ Invoice
-            </button>
+            <button className="invoice-download-btn" onClick={handleDownloadInvoice}>⬇ Invoice</button>
           </div>
         </div>
 
-        {order.status === "Cancelled" ? (
-          <div className="order-cancelled-banner">
-            ✕ This order was cancelled
-          </div>
-        ) : (
-          <div className="order-tracking">
+        {order.status !== "Cancelled" && (
+          <div className="order-tracking-wrapper">
             {TRACKING_STEPS.map((step, index) => {
               const isCompleted = index <= currentStepIndex;
               const isCurrent = index === currentStepIndex;
-
               return (
-                <div key={step} className="order-tracking-step">
-                  <div className="order-tracking-node">
-                    <span
-                      className={
-                        isCompleted
-                          ? "order-tracking-dot completed"
-                          : "order-tracking-dot"
-                      }
-                    >
-                      {isCompleted ? "✓" : ""}
-                    </span>
-
-                    {index < TRACKING_STEPS.length - 1 && (
-                      <span
-                        className={
-                          index < currentStepIndex
-                            ? "order-tracking-line completed"
-                            : "order-tracking-line"
-                        }
-                      />
-                    )}
+                <div key={step} className="tracking-step">
+                  <div className={isCompleted ? "tracking-dot completed" : "tracking-dot"}>
+                    {isCompleted ? "✓" : ""}
                   </div>
-
-                  <span
-                    className={
-                      isCurrent
-                        ? "order-tracking-label current"
-                        : isCompleted
-                        ? "order-tracking-label completed"
-                        : "order-tracking-label"
-                    }
-                  >
-                    {step}
-                  </span>
+                  {index < TRACKING_STEPS.length - 1 && (
+                    <div className={index < currentStepIndex ? "tracking-line completed" : "tracking-line"} />
+                  )}
+                  <span className={isCurrent ? "tracking-label current" : "tracking-label"}>{step}</span>
                 </div>
               );
             })}
           </div>
         )}
 
-        <p className="order-total">
-          <strong>Total :</strong> ₹{order.totalPrice}
-        </p>
-
-        <hr className="order-divider" />
-
-        <h3 className="order-section-title">Delivery Address</h3>
-
-        <div className="order-address">
-          <p>
-            <strong>Name:</strong> {order.shippingAddress?.fullName}
-          </p>
-
-          <p>
-            <strong>Mobile:</strong> {order.shippingAddress?.mobile}
-          </p>
-
-          <p>
-            <strong>Address:</strong> {order.shippingAddress?.address}
-          </p>
-
-          <p>
-            <strong>City:</strong> {order.shippingAddress?.city}
-          </p>
-
-          <p>
-            <strong>State:</strong> {order.shippingAddress?.state}
-          </p>
-
-          <p>
-            <strong>Pincode:</strong> {order.shippingAddress?.pincode}
-          </p>
+        <div className="customer-order-total">
+          <strong>Total Amount:</strong> <span>₹{order.totalPrice}</span>
         </div>
 
-        <hr className="order-divider" />
+        <hr className="customer-order-divider" />
 
-        <h3 className="order-section-title">Products</h3>
+        <h3 className="customer-order-subtitle">Delivery Address</h3>
+        <div className="customer-address-box">
+          <p><strong>{order.shippingAddress?.fullName}</strong></p>
+          <p>{order.shippingAddress?.address}, {order.shippingAddress?.city}, {order.shippingAddress?.state} - {order.shippingAddress?.pincode}</p>
+          <p>Mobile: {order.shippingAddress?.mobile}</p>
+        </div>
 
-        <div className="order-items">
+        <hr className="customer-order-divider" />
+
+        <h3 className="customer-order-subtitle">Products</h3>
+        <div className="customer-order-items">
           {order.items.map((item) => (
-            <div key={item._id} className="order-item">
-              <img
-                src={item.product?.image}
-                alt={item.product?.name}
-                className="order-item-image"
-              />
-
-              <div>
+            <div key={item._id} className="customer-order-item">
+              <img src={item.product?.image || "/no-image.png"} alt={item.product?.name} className="customer-order-item-image" />
+              <div className="customer-order-item-info">
                 <h4>{item.product?.name}</h4>
-
-                <p className="order-item-price">
-                  ₹{item.product?.price} × {item.quantity}
-                </p>
+                <p>₹{item.product?.price} × {item.quantity}</p>
+              </div>
+              <div className="customer-order-item-total">
+                <p>₹{(item.product?.price || 0) * item.quantity}</p>
               </div>
             </div>
           ))}
