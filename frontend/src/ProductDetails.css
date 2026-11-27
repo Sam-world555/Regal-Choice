@@ -1,7 +1,4 @@
-/* ---------- Product Details Page ---------- */
-/* Uses shared design tokens (--ink, --paper, --card, --wine, --wine-dark, --gold, --line, --muted)
-   defined in App.css :root — import App.css before this file, or duplicate the
-   :root block here if this page can load standalone. */
+/* ProductDetails.css - Premium Fixed Version */
 
 .pdp-loading {
   text-align: center;
@@ -10,102 +7,113 @@
 }
 
 .product-details {
-  padding-top: 48px;
+  padding-top: 40px;
+  padding-bottom: 60px;
+  background: var(--paper);
 }
 
 .details-card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 40px;
+  gap: 60px;
+  max-width: 1200px; /* PC par zyada failne nahi dega */
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
+/* ---------- LEFT SIDE (Image) ---------- */
 .details-left {
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 100px; /* Scroll karte waqt image fix rahegi */
 }
 
 .details-image-wrap {
-  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-height: 600px; /* Image ki height fix kar di taaki badi na dikhe */
+  aspect-ratio: 4 / 5; /* Thoda box shape */
   background: #f1efe9;
-  border-radius: 14px;
+  border-radius: 8px;
   overflow: hidden;
+  border: 1px solid var(--line);
 }
 
 .details-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* Image cut nahi hogi, poori dikhegi */
   display: block;
 }
 
 .thumbnail-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 16px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .thumbnail {
-  width: 66px;
-  height: 66px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid var(--line);
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .thumbnail:hover {
-  transform: translateY(-2px);
+  border-color: var(--gold);
 }
 
 .thumbnail-active {
   border: 2px solid var(--wine);
 }
 
+/* ---------- RIGHT SIDE (Info) ---------- */
 .details-right {
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 }
 
 .details-right h1 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 600;
-  font-size: 32px;
+  font-size: 36px;
   color: var(--ink);
+  line-height: 1.2;
 }
 
 .details-right .price {
-  margin: 0 0 12px;
-  font-size: 26px;
-  font-weight: 700;
+  margin: 0 0 15px;
+  font-size: 24px;
+  font-weight: 600;
   color: var(--wine);
 }
 
 .stock-badge {
   display: inline-block;
   width: fit-content;
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   padding: 5px 12px;
-  border-radius: 999px;
+  border-radius: 4px;
   background: rgba(43, 138, 62, 0.1);
   color: #2b8a3e;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .rate-btn {
   width: fit-content;
   padding: 9px 16px;
-  margin-bottom: 22px;
+  margin-bottom: 25px;
   border: 1px solid var(--line);
-  background: var(--paper);
+  background: transparent;
   color: var(--ink);
   border-radius: 999px;
   font-family: inherit;
@@ -120,14 +128,14 @@
 }
 
 .delivery-note {
-  margin: 0 0 10px;
+  margin: 0 0 15px;
   font-size: 14px;
   color: var(--muted);
 }
 
 .details-right .category {
-  margin: 0 0 16px;
-  font-size: 12px;
+  margin: 0 0 20px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gold);
@@ -135,69 +143,70 @@
 }
 
 .details-right .description {
-  margin: 0 0 28px;
+  margin: 0 0 30px;
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--muted);
-  padding-bottom: 28px;
+  padding-bottom: 30px;
   border-bottom: 1px solid var(--line);
 }
 
+/* Quantity */
 .quantity-selector {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 28px;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .qty-btn {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--line);
-  background: var(--card);
+  background: transparent;
   border-radius: 50%;
   font-size: 18px;
-  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .qty-btn:hover {
-  border-color: var(--wine);
-  background: var(--paper);
+  border-color: var(--ink);
 }
 
 .qty-value {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   min-width: 20px;
   text-align: center;
 }
 
+/* Buttons */
 .details-buttons {
   display: flex;
-  gap: 14px;
-  margin-top: auto;
+  gap: 15px;
 }
 
 .btn-outline,
 .btn-solid {
   flex: 1;
-  padding: 15px 20px;
-  border-radius: 999px;
+  padding: 16px 20px;
+  border-radius: 4px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-outline {
   background: transparent;
-  border: 1.5px solid var(--ink);
+  border: 1px solid var(--ink);
   color: var(--ink);
 }
 
@@ -208,7 +217,7 @@
 
 .btn-solid {
   background: var(--wine);
-  border: 1.5px solid var(--wine);
+  border: 1px solid var(--wine);
   color: var(--paper);
 }
 
@@ -217,35 +226,13 @@
   border-color: var(--wine-dark);
 }
 
-@media (max-width: 800px) {
-  .details-card {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 24px;
-  }
-
-  .details-buttons {
-    flex-direction: column;
-  }
-}
-/* --- Add to Admin.css (used in AdminProducts.jsx product card) --- */
-
-.admin-product-sku {
-  margin: 0 0 6px;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
-/* --- Add to ProductDetails.css (used next to the category line) --- */
-
+/* Extra elements */
 .sku-text {
   color: var(--muted);
   font-weight: 500;
   text-transform: none;
   letter-spacing: normal;
 }
-/* --- Add to ProductDetails.css (styles the react-markdown rendered description) --- */
 
 .description-markdown {
   font-size: 15px;
@@ -253,87 +240,46 @@
   color: var(--muted);
 }
 
-.description-markdown h1,
-.description-markdown h2,
-.description-markdown h3,
-.description-markdown h4 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 0 0 10px;
-  font-size: 17px;
-}
-
-.description-markdown p {
-  margin: 0 0 14px;
-}
-
-.description-markdown strong {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.description-markdown ul,
-.description-markdown ol {
-  margin: 0 0 14px;
-  padding-left: 20px;
-}
-
-.description-markdown li {
-  margin-bottom: 6px;
-}
-
-.description-markdown li::marker {
-  color: var(--wine);
-}
-
-.description-markdown > *:last-child {
-  margin-bottom: 0;
-}
-@media (max-width: 480px) {
-  .product-details {
-    padding-top: 24px;
+/* ---------- MOBILE RESPONSIVE ---------- */
+@media (max-width: 800px) {
+  .details-card {
+    grid-template-columns: 1fr; /* Ek ke niche ek */
+    gap: 30px;
   }
 
-  .details-card {
-    padding: 16px;
-    gap: 20px;
-    border-radius: 14px;
+  .details-left {
+    position: relative;
+    top: 0;
+  }
+
+  .details-image-wrap {
+    max-height: 500px;
+  }
+  
+  .details-right h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-details {
+    padding-top: 20px;
+  }
+
+  .details-image-wrap {
+    max-height: 400px;
   }
 
   .details-right h1 {
-    font-size: 22px;
+    font-size: 24px;
   }
 
-  .details-right .price {
-    font-size: 20px;
+  .details-buttons {
+    flex-direction: column; /* Mobile par buttons full width */
   }
 
   .thumbnail {
-    width: 52px;
-    height: 52px;
-  }
-
-  .details-right .description {
-    font-size: 14px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-  }
-
-  .quantity-selector {
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .qty-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-
-  .btn-outline,
-  .btn-solid {
-    padding: 13px 16px;
-    font-size: 13px;
+    width: 55px;
+    height: 55px;
   }
 }
