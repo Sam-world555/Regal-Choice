@@ -16,7 +16,6 @@ function AdminLayout() {
     const verifyAdmin = async () => {
       const token = sessionStorage.getItem("token");
 
-      // No token at all in this tab — send to login straight away
       if (!token) {
         toast.warning("Please login first.");
         navigate("/login");
@@ -60,14 +59,15 @@ function AdminLayout() {
 
   if (checking) {
     return (
-      <div className="container admin-page">
+      <div className="admin-page-wrapper">
         <p className="empty-note">Checking access...</p>
       </div>
     );
   }
 
   return (
-    <div className="container admin-page">
+    <div className="admin-page-wrapper">
+      {/* Admin Header */}
       <div className="admin-header-row">
         <h1 className="admin-title">Admin Dashboard</h1>
 
@@ -84,6 +84,7 @@ function AdminLayout() {
         </div>
       </div>
 
+      {/* Admin Tabs */}
       <div className="admin-nav">
         <Link
           to="/admin"
@@ -123,7 +124,10 @@ function AdminLayout() {
         </Link>
       </div>
 
-      <Outlet />
+      {/* Main Content Area */}
+      <div className="admin-content">
+        <Outlet />
+      </div>
     </div>
   );
 }
