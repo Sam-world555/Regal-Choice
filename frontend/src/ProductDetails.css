@@ -284,3 +284,99 @@
     height: 55px;
   }
 }
+/* =========================================
+   REVIEWS & RELATED PRODUCTS FIX
+========================================= */
+
+/* Reviews Section */
+.customer-reviews, 
+.reviews-section, 
+.related-products-section, 
+.you-may-also-like {
+  max-width: 1200px;
+  margin: 60px auto !important; /* Center kar dega */
+  padding: 0 20px !important;
+  width: 100%;
+}
+
+/* Related Products Heading */
+.customer-reviews h2,
+.related-products-section h2,
+.you-may-also-like h2,
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--ink);
+  text-align: left;
+}
+
+/* Related Products Grid */
+.related-products-grid,
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  justify-content: center;
+}
+
+/* Related Product Card */
+.related-product-card {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+.related-product-card img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.related-product-card:hover img {
+  transform: scale(1.02);
+}
+
+.related-product-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.related-product-card .price {
+  font-size: 14px;
+  color: var(--wine);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .customer-reviews, 
+  .reviews-section, 
+  .related-products-section, 
+  .you-may-also-like {
+    margin: 40px auto !important;
+    padding: 0 16px !important;
+  }
+
+  .related-products-grid,
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* Mobile pe 2 column */
+    gap: 16px;
+  }
+  
+  .related-products-section h2,
+  .section-title {
+    font-size: 22px;
+  }
+}
