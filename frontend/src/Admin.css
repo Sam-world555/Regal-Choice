@@ -1,21 +1,24 @@
-/* Admin.css - Premium Layout */
+/* =========================================
+   ADMIN DASHBOARD FINAL PREMIUM CSS
+========================================= */
 
 .admin-page-wrapper {
-  max-width: 1300px;
-  margin: 40px auto;
-  padding: 0 20px 60px;
-  min-height: 70vh;
+  max-width: 1200px;
+  margin: 40px auto !important;
+  padding: 0 20px 60px !important;
+  min-height: 80vh;
+  display: block !important;
 }
 
 .admin-title {
-  margin: 0 0 32px;
+  margin: 0;
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 600;
-  font-size: 36px;
+  font-size: 34px;
   color: var(--ink);
 }
 
-/* ---------- Admin Header ---------- */
+/* ---------- Header ---------- */
 .admin-header-row {
   display: flex;
   align-items: center;
@@ -24,10 +27,6 @@
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--line);
-}
-
-.admin-header-row .admin-title {
-  margin: 0;
 }
 
 .admin-header-actions {
@@ -39,7 +38,7 @@
 .admin-header-link {
   font-size: 14px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--ink) !important;
   text-decoration: none;
   padding: 8px 16px;
   border: 1px solid var(--line);
@@ -57,8 +56,8 @@
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
-  color: var(--paper);
-  background: var(--wine);
+  color: var(--paper) !important;
+  background: var(--wine) !important;
   border: 1px solid var(--wine);
   padding: 8px 20px;
   border-radius: 4px;
@@ -67,10 +66,10 @@
 }
 
 .admin-header-logout-btn:hover {
-  background: var(--wine-dark);
+  background: var(--wine-dark) !important;
 }
 
-/* ---------- Admin Nav (Tabs) ---------- */
+/* ---------- Nav Tabs ---------- */
 .admin-nav {
   display: flex;
   flex-wrap: wrap;
@@ -84,19 +83,19 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--muted) !important;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .admin-nav-link:hover {
-  color: var(--ink);
+  color: var(--ink) !important;
 }
 
 .admin-nav-link-active {
-  color: var(--wine);
-  border-bottom-color: var(--wine);
+  color: var(--wine) !important;
+  border-bottom-color: var(--wine) !important;
 }
 
 /* ---------- Stat Cards ---------- */
@@ -141,6 +140,7 @@
 .stat-green { color: #16a34a; }
 .stat-wine { color: var(--wine); }
 .stat-purple { color: #7c3aed; }
+.stat-red { color: #dc2626; }
 
 /* ---------- Panels / Forms ---------- */
 .admin-panel {
@@ -175,63 +175,245 @@
 
 .admin-input {
   width: 100%;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
+  padding: 14px 16px !important;
+  border: 1px solid var(--line) !important;
   border-radius: 4px;
   font-family: inherit;
   font-size: 14px;
-  background: #fff;
+  background: #fff !important;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .admin-input:focus {
-  border-color: var(--wine);
+  border-color: var(--wine) !important;
   box-shadow: 0 0 0 3px rgba(122, 31, 61, 0.1);
 }
 
-/* ... (Baaki CSS jaise buttons, orders, coupons waise hi rahenge) ... */
-/* Agar aapko baaki ka code chahiye toh aap apni purani file se copy kar lena, 
-   bas neeche wale responsive part ko update kar lena */
-
-.admin-page {
-  padding-top: 40px;
-  padding-bottom: 60px;
+.admin-checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
-/* ... (Yahan aap apna baaki ka Admin.css ka code paste kar sakte hain) ... */
+.admin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 1px dashed var(--line) !important;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-label:hover {
+  border-color: var(--wine) !important;
+  color: var(--wine);
+}
+
+.submit-btn {
+  width: fit-content;
+  padding: 14px 32px;
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  border: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: var(--wine) !important;
+}
+
+/* ---------- Section Headers ---------- */
+.section-title {
+  margin: 0 0 24px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.empty-note {
+  color: var(--muted);
+  font-size: 14px;
+  padding: 20px 0 40px;
+}
+
+/* ---------- Cards (Users, Coupons, Orders) ---------- */
+.admin-users-list, 
+.admin-coupons-list, 
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.admin-user-row, 
+.admin-coupon-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--line) !important;
+  border-radius: 8px;
+  background: var(--card) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  flex-wrap: wrap;
+}
+
+.admin-user-info, 
+.admin-coupon-body {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-user-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.admin-user-email {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.admin-user-id-btn {
+  margin-top: 6px;
+  width: fit-content;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+/* Toolbars */
+.admin-users-toolbar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-users-search {
+  flex: 2;
+  min-width: 250px;
+}
+
+.admin-users-filter {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Badges & Pills */
+.admin-role-badge {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.admin-role-admin { background: rgba(122, 31, 61, 0.1); color: var(--wine); }
+.admin-role-user { background: rgba(107, 101, 96, 0.12); color: var(--muted); }
+
+.admin-role-toggle-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.admin-role-toggle-btn:hover { border-color: var(--wine); color: var(--wine); }
+
+/* ---------- Products Grid ---------- */
+.admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.admin-product-card {
+  display: flex;
+  gap: 20px;
+  border: 1px solid var(--line) !important;
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--card) !important;
+  transition: box-shadow 0.2s ease;
+}
+
+.admin-product-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: #f1efe9;
+}
+
+.admin-product-body { flex: 1; min-width: 0; }
+.admin-product-name { margin: 0 0 8px; font-family: 'Playfair Display', serif; font-size: 20px; }
+
+.admin-product-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit-btn { background: #2563eb; color: #fff; }
+.delete-btn { background: #dc2626; color: #fff; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
-  .admin-page-wrapper {
-    margin: 20px auto;
-    padding: 0 16px;
-  }
-  .admin-header-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  .admin-title {
-    font-size: 28px;
-  }
-  .admin-nav {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border: none;
-    gap: 8px;
-  }
-  .admin-nav-link {
-    text-align: center;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    margin: 0;
-    padding: 10px;
-    font-size: 12px;
-  }
-  .admin-nav-link-active {
-    background: var(--wine);
-    color: var(--paper);
-    border-color: var(--wine);
-  }
+  .admin-page-wrapper { margin: 20px auto !important; padding: 0 16px !important; }
+  .admin-header-row { flex-direction: column; align-items: flex-start; }
+  .admin-nav { display: grid; grid-template-columns: repeat(3, 1fr); border: none; gap: 8px; }
+  .admin-nav-link { text-align: center; border: 1px solid var(--line); border-radius: 4px; margin: 0; padding: 10px; font-size: 12px; }
+  .admin-nav-link-active { background: var(--wine); color: var(--paper) !important; border-color: var(--wine); }
+  .admin-products-grid { grid-template-columns: 1fr; }
+  .admin-product-card { flex-direction: column; }
+  .admin-product-image { width: 100%; height: 250px; }
+  .admin-user-row, .admin-coupon-card { flex-direction: column; align-items: flex-start; }
 }
