@@ -20,30 +20,18 @@ function Cart() {
   const fetchCart = async () => {
     try {
       setLoading(true);
-
       const token = sessionStorage.getItem("token");
+      const response = await axios.get(API_URL + "/api/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      const response = await axios.get(
-        API_URL + "/api/cart",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const validItems = response.data.filter(
-        (item) => item.product !== null
-      );
-
+      const validItems = response.data.filter((item) => item.product !== null);
       setCartItems(validItems);
 
       const totalPrice = validItems.reduce(
-        (sum, item) =>
-          sum + (item.product?.price || 0) * item.quantity,
+        (sum, item) => sum + (item.product?.price || 0) * item.quantity,
         0
       );
-
       setTotal(totalPrice);
     } catch (error) {
       console.log(error);
@@ -55,19 +43,12 @@ function Cart() {
   const updateQuantity = async (id, quantity) => {
     try {
       setUpdatingId(id);
-
       const token = sessionStorage.getItem("token");
-
       await axios.put(
         `${API_URL}/api/cart/${id}`,
         { quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       await fetchCart();
     } catch (error) {
       console.log(error);
@@ -80,18 +61,10 @@ function Cart() {
   const removeItem = async (id) => {
     try {
       setRemovingId(id);
-
       const token = sessionStorage.getItem("token");
-
-      await axios.delete(
-        `${API_URL}/api/cart/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      await axios.delete(`${API_URL}/api/cart/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       toast.success("Item removed from cart.");
       await fetchCart();
     } catch (error) {
@@ -108,7 +81,7 @@ function Cart() {
   };
 
   return (
-    <div className="container cart-page">
+    <div className="page-container"> {/* FIX: container ki jagah page-container */}
       <h1 className="cart-title">My Cart</h1>
 
       {loading ? (
@@ -144,45 +117,31 @@ function Cart() {
 
                 <div className="cart-item-body">
                   <h3>{item.product?.name}</h3>
-
-                  <p className="cart-item-price">
-                    Price: ₹{item.product?.price}
-                  </p>
-
-                  <p className="cart-item-delivery">
-                    Free Delivery
-                  </p>
+                  <p className="cart-item-price">Price: ₹{item.product?.price}</p>
+                  <p className="cart-item-delivery">Free Delivery</p>
 
                   <div className="cart-qty-selector">
                     <button
                       className="qty-btn"
                       disabled={updatingId === item._id}
-                      onClick={() =>
-                        item.quantity > 1 &&
-                        updateQuantity(item._id, item.quantity - 1)
-                      }
+                      onClick={() => item.quantity > 1 && updateQuantity(item._id, item.quantity - 1)}
                     >
                       −
                     </button>
-
                     <span className="qty-value">
                       {updatingId === item._id ? "..." : item.quantity}
                     </span>
-
                     <button
                       className="qty-btn"
                       disabled={updatingId === item._id}
-                      onClick={() =>
-                        updateQuantity(item._id, item.quantity + 1)
-                      }
+                      onClick={() => updateQuantity(item._id, item.quantity + 1)}
                     >
                       +
                     </button>
                   </div>
 
                   <p className="cart-item-subtotal">
-                    Subtotal: ₹
-                    {(item.product?.price || 0) * item.quantity}
+                    Subtotal: ₹{(item.product?.price || 0) * item.quantity}
                   </p>
 
                   <button
@@ -199,7 +158,6 @@ function Cart() {
 
           <div className="cart-summary">
             <h2 className="cart-total">Total: ₹{total}</h2>
-
             <button
               onClick={handleCheckoutClick}
               className="checkout-btn"

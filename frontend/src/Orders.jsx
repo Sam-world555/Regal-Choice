@@ -7,7 +7,6 @@ import "./components/Skeleton.css";
 
 function Orders() {
   const navigate = useNavigate();
-
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -19,18 +18,10 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-
       const token = sessionStorage.getItem("token");
-
-      const response = await axios.get(
-        API_URL + "/api/orders/myorders",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const response = await axios.get(API_URL + "/api/orders/myorders", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setOrders(response.data);
     } catch (error) {
       console.log(error);
@@ -41,36 +32,22 @@ function Orders() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Delivered":
-        return "green";
-
-      case "Shipped":
-        return "orange";
-
-      case "Processing":
-        return "#007bff";
-
-      case "Cancelled":
-        return "red";
-
-      default:
-        return "#666";
+      case "Delivered": return "green";
+      case "Shipped": return "orange";
+      case "Processing": return "#007bff";
+      case "Cancelled": return "red";
+      default: return "#666";
     }
   };
 
   const sortedOrders = useMemo(
-    () =>
-      [...orders].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      ),
+    () => [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
     [orders]
   );
 
   const visibleOrders = useMemo(() => {
     if (!search.trim()) return sortedOrders;
-
     const term = search.trim().toLowerCase();
-
     return sortedOrders.filter((order) => {
       const idMatch = order._id.toLowerCase().includes(term);
       const nameMatch = order.items.some((item) =>
@@ -81,7 +58,7 @@ function Orders() {
   }, [sortedOrders, search]);
 
   return (
-    <div className="container orders-page">
+    <div className="page-container"> {/* FIX: container ki jagah page-container */}
       <h1 className="orders-title">My Orders</h1>
 
       {!loading && orders.length > 0 && (
@@ -107,9 +84,7 @@ function Orders() {
       ) : orders.length === 0 ? (
         <div className="orders-empty">
           <h3>No Orders Yet.</h3>
-          <p className="orders-empty-subtext">
-            Your placed orders will show up here.
-          </p>
+          <p className="orders-empty-subtext">Your placed orders will show up here.</p>
         </div>
       ) : visibleOrders.length === 0 ? (
         <p className="empty-note">No orders match your search.</p>
@@ -126,9 +101,7 @@ function Orders() {
                 onClick={() => navigate(`/orders/${order._id}`)}
               >
                 <img
-                  src={
-                    firstItem?.product?.image || "/no-image.png"
-                  }
+                  src={firstItem?.product?.image || "/no-image.png"}
                   alt={firstItem?.product?.name}
                   className="order-row-image"
                 />
@@ -137,10 +110,7 @@ function Orders() {
                   <h3 className="order-row-title">
                     {firstItem?.product?.name}
                     {extraCount > 0 && (
-                      <span className="order-row-extra">
-                        {" "}
-                        +{extraCount} more
-                      </span>
+                      <span className="order-row-extra"> +{extraCount} more</span>
                     )}
                   </h3>
 

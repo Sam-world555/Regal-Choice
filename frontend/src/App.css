@@ -452,3 +452,165 @@ body {
   .card-price { font-size: 15px; }
   .add-to-cart-btn { padding: 8px 10px; font-size: 10px; }
 }
+/* =========================================
+   CART, WISHLIST, ORDERS & PROFILE FIX
+========================================= */
+
+/* Common wrapper for all inner pages */
+.page-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  min-height: 70vh; /* Footer niche rakhne ke liye */
+}
+
+/* Headings (My Cart, My Wishlist, etc.) */
+.page-container h1, 
+.page-container h2.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- CART PAGE ---------- */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.cart-item img {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-details h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  margin: 0 0 5px;
+}
+
+.cart-total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid var(--ink);
+}
+
+.cart-total-section h2 {
+  font-size: 28px;
+  margin: 0;
+}
+
+/* ---------- WISHLIST PAGE ---------- */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.wishlist-empty {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.wishlist-empty h2 {
+  font-family: 'Playfair Display', serif;
+  border: none; /* Purani line hata di */
+}
+
+/* ---------- ORDERS PAGE ---------- */
+.order-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+}
+.order-card:hover {
+  box-shadow: var(--shadow-soft);
+}
+.order-status {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.order-status.pending { background: #fff3cd; color: #856404; }
+.order-status.delivered { background: #d4edda; color: #155724; }
+
+/* ---------- PROFILE PAGE ---------- */
+.profile-tabs {
+  display: flex;
+  gap: 30px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 30px;
+}
+.profile-tab {
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted);
+  border-bottom: 2px solid transparent;
+}
+.profile-tab.active {
+  color: var(--wine);
+  border-bottom: 2px solid var(--wine);
+}
+
+.profile-form input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page-container {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+  .page-container h1, .page-container h2.section-title {
+    font-size: 28px;
+  }
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cart-total-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}

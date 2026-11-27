@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import "./App.css";
 import "./Wishlist.css";
 import { toast } from "react-toastify";
-import Navbar from "./Navbar";
 import ProductSkeleton from "./components/ProductSkeleton";
 
 function Wishlist() {
@@ -23,16 +22,9 @@ function Wishlist() {
   const fetchWishlist = async () => {
     try {
       setLoading(true);
-
-      const { data } = await axios.get(
-        API_URL + "/api/wishlist",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const { data } = await axios.get(API_URL + "/api/wishlist", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setWishlistItems(data);
     } catch (error) {
       console.log(error);
@@ -44,17 +36,11 @@ function Wishlist() {
   const handleRemove = async (productId) => {
     try {
       setRemovingId(productId);
-
       await axios.post(
         API_URL + "/api/wishlist/toggle",
         { productId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       toast.success("Removed from Wishlist");
       setWishlistItems((prev) =>
         prev.filter((item) => item.product._id !== productId)
@@ -67,10 +53,7 @@ function Wishlist() {
     }
   };
 
-  // Adds the item to cart, then removes it from the wishlist
   const handleMoveToCart = async (productId) => {
-    const token = sessionStorage.getItem("token");
-
     if (!token) {
       toast.warning("Please login first.");
       return;
@@ -78,30 +61,16 @@ function Wishlist() {
 
     try {
       setMovingToCartId(productId);
-
       await axios.post(
         API_URL + "/api/cart",
-        {
-          product: productId,
-          quantity: 1,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { product: productId, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       await axios.post(
         API_URL + "/api/wishlist/toggle",
         { productId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       toast.success("Moved to Cart!");
       setWishlistItems((prev) =>
         prev.filter((item) => item.product._id !== productId)
@@ -115,9 +84,8 @@ function Wishlist() {
   };
 
   return (
-    <div className="container wishlist-page">
-      <Navbar />
-
+    <div className="page-container"> {/* FIX: container ki jagah page-container */}
+      {/* FIX: Navbar hata diya gaya hai */}
       <h1 className="wishlist-title">My Wishlist</h1>
 
       {loading ? (
@@ -145,7 +113,6 @@ function Wishlist() {
                     className="product-image"
                   />
                 )}
-
                 <button
                   className="wishlist-heart-btn active"
                   disabled={removingId === item.product._id}
@@ -157,27 +124,20 @@ function Wishlist() {
               </div>
 
               <div className="card-body">
-                <Link
-                  to={`/product/${item.product._id}`}
-                  className="card-title-link"
-                >
+                <Link to={`/product/${item.product._id}`} className="card-title-link">
                   <h3>{item.product.name}</h3>
                 </Link>
-
                 <p className="card-category">{item.product.category}</p>
                 <p className="card-description">{item.product.description}</p>
 
                 <div className="card-footer">
                   <p className="card-price">₹{item.product.price}</p>
-
                   <button
                     className="add-to-cart-btn"
                     disabled={movingToCartId === item.product._id}
                     onClick={() => handleMoveToCart(item.product._id)}
                   >
-                    {movingToCartId === item.product._id
-                      ? "Moving..."
-                      : "Move to Cart"}
+                    {movingToCartId === item.product._id ? "Moving..." : "Move to Cart"}
                   </button>
                 </div>
               </div>

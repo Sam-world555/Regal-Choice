@@ -6,7 +6,6 @@ import "./App.css";
 import "./Profile.css";
 import "./ConfirmModal.css";
 import { toast } from "react-toastify";
-import Navbar from "./Navbar";
 import ConfirmModal from "./ConfirmModal";
 
 function Profile() {
@@ -294,17 +293,14 @@ function Profile() {
 
   if (loading) {
     return (
-      <div className="container profile-page">
-        <Navbar />
+      <div className="page-container profile-page">
         <p className="empty-note">Loading profile...</p>
       </div>
     );
   }
 
   return (
-    <div className="container profile-page">
-      <Navbar />
-
+    <div className="page-container profile-page">
       <h1 className="profile-title">My Profile</h1>
 
       <button
