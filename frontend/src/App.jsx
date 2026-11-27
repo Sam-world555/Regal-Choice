@@ -172,7 +172,7 @@ function Home() {
   return (
     <div className="container">
       
-      {/* 1. Hero Section (Full Width Black Gradient) */}
+      {/* 1. Hero Section */}
       <div className="brand-header">
         <p className="brand-eyebrow">Est. Tailored Goods</p>
         <h1>Regal Choice</h1>
@@ -247,23 +247,9 @@ function Home() {
         </div>
       </div>
 
-      {/* 2. Trust Strip Wrapper (Marquee Animation - Double items for seamless loop) */}
+      {/* 2. Trust Strip Wrapper (Clean & Centered) */}
       <div className="trust-strip-wrapper">
         <div className="trust-strip">
-          {/* Set 1 */}
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
-          </div>
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Easy Returns</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>7 Days Return Policy</span>
-          </div>
-          <div className="trust-item">
-            <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Secure Payments</strong>
-            <span style={{ fontSize: '12px', color: '#6b6560' }}>100% Safe Checkout</span>
-          </div>
-          {/* Set 2 (Duplicate for infinite loop) */}
           <div className="trust-item">
             <strong style={{ display: 'block', fontSize: '14px', fontFamily: 'Playfair Display' }}>Free Shipping</strong>
             <span style={{ fontSize: '12px', color: '#6b6560' }}>On orders above ₹999</span>
